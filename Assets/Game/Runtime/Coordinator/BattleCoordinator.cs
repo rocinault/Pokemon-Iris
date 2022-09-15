@@ -71,17 +71,12 @@ namespace Iris
             return m_Enemy.TryGetActivePokemon(out pokemon);
         }
 
-        internal void PrintTextCharByChar(string message)
-        {
-            m_GraphicsInterface.PrintTextCharByChar(message);
-        }
-
         internal void AddFightMoveToRuntimeSet<T>(T item) where T : AbilitySpec
         {
             m_Player.TryGetActivePokemon(out var instigator);
             m_Enemy.TryGetActivePokemon(out var target);
 
-            var fight = new Fight(this, instigator, target, item);
+            var fight = new Fight(m_GraphicsInterface, instigator, target, item);
 
             m_MoveRuntimeSet.Add(fight);
         }

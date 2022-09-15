@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 
 using Golem;
+using Slowbro;
 
 namespace Iris
 {
@@ -20,8 +21,107 @@ namespace Iris
 
         public override void Enter()
         {
-            CoroutineUtility.StartCoroutine(WildPokemonEncounterSequence());
+            m_GraphicsInterface.HideAll();
+            m_GraphicsInterface.CleanupTextProcessorAndClearText();
+
+            SetEnemyStatPanelProperties();
+            SetPlayerStatPanelAndAbilityMenuProperties();
+
+            m_Coordinator.StartCoroutine(WildPokemonBattleStartSequence());
         }
+
+        internal IEnumerator WildPokemonBattleStartSequence()
+        {
+            yield return new Parallel(m_Coordinator,
+                m_GraphicsInterface.ShowEnumerator<PlayerPanel>(),
+                m_GraphicsInterface.ShowEnumerator<PlayerTrainerPanel>(),
+                m_GraphicsInterface.ShowEnumerator<EnemyPanel>(),
+                m_GraphicsInterface.ShowEnumerator<EnemyPokemonPanel>());
+
+            //yield return new WaitForSeconds(0.15f);
+
+            yield return new Parallel(m_Coordinator,
+                m_GraphicsInterface.ShowEnumerator<EnemyStatsPanel>(),
+                PrintEncounterNameCharByChar());
+
+            //yield return new WaitForSeconds(0.5f);
+
+            yield return new Sequence(m_Coordinator,
+                m_GraphicsInterface.HideEnumerator<PlayerTrainerPanel>(),
+                m_GraphicsInterface.ShowEnumerator<PlayerPokemonPanel>(),
+                m_GraphicsInterface.ShowEnumerator<PlayerStatsPanel>()
+                );
+
+            m_Coordinator.ChangeState(BattleState.wait);
+        }
+
+        private void SetEnemyStatPanelProperties()
+        {
+            m_Coordinator.TryGetEnemyActivePokemon(out var pokemon);
+
+            var props = PokemonGraphicProperties.CreateProperties(pokemon);
+            m_GraphicsInterface.SetProperties(typeof(EnemyStatsPanel).Name, props);
+            m_GraphicsInterface.SetProperties(typeof(EnemyPokemonPanel).Name, props);
+        }
+
+        private void SetPlayerStatPanelAndAbilityMenuProperties()
+        {
+            m_Coordinator.TryGetPlayerActivePokemon(out var pokemon);
+
+            var props = PokemonGraphicProperties.CreateProperties(pokemon);
+            m_GraphicsInterface.SetProperties(typeof(PlayerStatsPanel).Name, props);
+            m_GraphicsInterface.SetProperties(typeof(PlayerPokemonPanel).Name, props);
+            m_GraphicsInterface.SetProperties(typeof(AbilitiesMenu).Name, props);
+        }
+
+        private IEnumerator PrintEncounterNameCharByChar()
+        {
+            m_Coordinator.TryGetEnemyActivePokemon(out var pokemon);
+
+            string message = string.Concat($"A wild {pokemon.name.ToUpper()} appeared!");
+
+            yield return m_GraphicsInterface.TypeTextCharByChar(message);
+        }
+    }
+}
+
+/*
+
+            var sequence = new Sequence();
+
+            sequence.Build(
+                new Parallel().Build(
+                    (Routine)m_GraphicsInterface.Show<PlayerPanel>(),
+                    (Routine)m_GraphicsInterface.Show<EnemyPanel>()),
+                (Routine)m_GraphicsInterface.Show<EnemyStatsPanel>()
+                //new Slowbro.WaitUntil(PrintEncounterNameCharByChar())
+
+                );
+
+            m_Coordinator.StartCoroutine(sequence.Run());
+
+var sequence = new Sequence();
+
+            sequence.Build(
+                m_GraphicsInterface.ShowEnumerator<PlayerPanel>(),
+                m_GraphicsInterface.ShowEnumerator<EnemyPanel>()
+                );
+
+            m_Coordinator.StartCoroutine(sequence.Run());
+
+var sequence = new Sequence();
+
+            sequence.Build(
+                (Routine)m_GraphicsInterface.Show<PlayerPanel>(),
+                (Routine)m_GraphicsInterface.Show<EnemyPanel>()
+                );
+
+            m_Coordinator.StartCoroutine(sequence.Run());
+ */
+
+/*
+
+m_Coordinator.StartCoroutine(WildPokemonEncounterSequence());
 
         // Todo find way to get the timing right without adding too much spaghetti code.
         private IEnumerator WildPokemonEncounterSequence()
@@ -109,5 +209,4 @@ namespace Iris
             m_GraphicsInterface.Show<PlayerPokemonPanel>();
             m_GraphicsInterface.Show<PlayerStatsPanel>();
         }
-    }
-}
+ */ 

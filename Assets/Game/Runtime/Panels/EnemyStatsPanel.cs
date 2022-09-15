@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.UI;
 
-using Golem;
+using Slowbro;
 using Voltorb;
 
 namespace Iris
@@ -26,16 +27,12 @@ namespace Iris
         [SerializeField]
         private StatsPanelSettings m_Settings = new StatsPanelSettings();
 
-        public override void Show()
+        public override IEnumerator Show()
         {
-            base.Show();
+            gameObject.SetActive(true);
 
-            AnimateEnterTransition();
-        }
-
-        protected override void AnimateEnterTransition()
-        {
-            rectTransform.Move(new Vector3(-128f, 0f), Vector3.zero, 0.5f, EasingType.EaseOutSine, Space.World);
+            // 0.425f
+            yield return rectTransform.Translate(new Vector3(-128f, 0f), Vector3.zero, 0.1f, Space.World, EasingType.linear);
         }
 
         public override void SetProperties(PokemonGraphicProperties props)

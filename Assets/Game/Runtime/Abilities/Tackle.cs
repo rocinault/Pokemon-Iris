@@ -19,13 +19,11 @@ namespace Iris
 
             }
 
-            public override bool keepWaiting => IsComplete();
-
-            protected override void ActivateAbility(Pokemon instigator, Pokemon target)
+            protected override System.Collections.IEnumerator ActivateAbility(Pokemon instigator, Pokemon target)
             {
                 Debug.Log($"{instigator.name} used tackle on {target.name}");
 
-                m_IsComplete = true;
+                yield break;
             }
         }
     }

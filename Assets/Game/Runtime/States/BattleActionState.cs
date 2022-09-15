@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 
@@ -19,24 +20,18 @@ namespace Iris
 
         public override void Enter()
         {
-            RunAllSelectedActionsInPriority();   
+            m_Coordinator.StartCoroutine(RunAllSelectedActionsInPriority());
         }
 
-        private void RunAllSelectedActionsInPriority()
+        private IEnumerator RunAllSelectedActionsInPriority()
         {
-            // Activate the ability, check whether it was successful
-            // -> display the correct dialogue.
-            // -> Perform the tweening and effects.
-
             var moveRuntimeSet = m_Coordinator.GetMoveRuntimeSet();
-
             moveRuntimeSet.Sort();
 
-            var sequence = new SequenceCoroutine();
-
-            sequence.Build(moveRuntimeSet.ToArray());
-
-            CoroutineUtility.StartCoroutine(sequence.Run());
+            for (int i = 0; i < moveRuntimeSet.Count(); i++)
+            {
+                yield return moveRuntimeSet[i].Run();
+            }
         }
 
     }

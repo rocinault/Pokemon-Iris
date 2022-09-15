@@ -19,7 +19,9 @@ namespace Iris
 
         public override void Enter()
         {
-            AddListeners();
+            EventSystem.instance.AddListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);
+            EventSystem.instance.AddListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
+
             PrintPokemonNameAndShowMovesMenu();
         }
 
@@ -31,12 +33,6 @@ namespace Iris
 
             m_GraphicsInterface.PrintCompletedText(message);
             m_GraphicsInterface.Show<MovesMenu>();
-        }
-
-        private void AddListeners()
-        {
-            EventSystem.instance.AddListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);
-            EventSystem.instance.AddListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
         }
 
         private void OnMoveButtonClicked(MoveButtonClickedEventArgs args)
@@ -68,7 +64,9 @@ namespace Iris
         public override void Exit()
         {
             ClearTextAndHideAbilitiesMenu();
-            RemoveListeners();
+
+            EventSystem.instance.RemoveListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);
+            EventSystem.instance.RemoveListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
         }
 
         private void ClearTextAndHideAbilitiesMenu()
@@ -76,12 +74,5 @@ namespace Iris
             m_GraphicsInterface.CleanupTextProcessorAndClearText();
             m_GraphicsInterface.Hide<AbilitiesMenu>();
         }
-
-        private void RemoveListeners()
-        {
-            EventSystem.instance.RemoveListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);
-            EventSystem.instance.RemoveListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
-        }
-
     }
 }

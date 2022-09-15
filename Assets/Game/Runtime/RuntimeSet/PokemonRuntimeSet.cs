@@ -14,7 +14,7 @@ namespace Iris
         {
             if (m_Collection.Count < kMaxNumberOfPartyMembers)
             {
-                Debug.Log($"Added {item.name} to {name}");
+                //Debug.Log($"Added {item.name} to {name}");
 
                 base.Add(item);
             }

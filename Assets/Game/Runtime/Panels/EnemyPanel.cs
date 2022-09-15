@@ -1,22 +1,17 @@
 using UnityEngine;
 
-using Golem;
+using Slowbro;
 using Voltorb;
 
 namespace Iris
 {
     internal sealed class EnemyPanel : Panel
     {
-        public override void Show()
+        public override System.Collections.IEnumerator Show()
         {
-            base.Show();
+            gameObject.SetActive(true);
 
-            AnimateEnterTransition();
-        }
-
-        protected override void AnimateEnterTransition()
-        {
-            rectTransform.Move(new Vector3(-256f, 0f), Vector3.zero, 1.25f, EasingType.EaseOutSine, Space.World);
+            yield return rectTransform.Translate(new Vector3(-256f, 0f), Vector3.zero, 0.1f, Space.World, EasingType.EaseOutSine);
         }
     }
 }

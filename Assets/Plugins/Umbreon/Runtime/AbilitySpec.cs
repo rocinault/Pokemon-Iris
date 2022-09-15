@@ -1,18 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using UnityEngine;
 
 namespace Umbreon
 {
-    public abstract class AbilitySpec : CustomYieldInstruction
+    public abstract class AbilitySpec
     {
         public readonly ScriptableAbility asset;
 
         public readonly Attribute cost;
         public readonly Attribute cooldown;
-
-        protected bool m_IsComplete;
 
         public AbilitySpec(ScriptableAbility asset)
         {
@@ -20,26 +19,11 @@ namespace Umbreon
 
             cost = new Attribute(asset.cost);
             cooldown = new Attribute(asset.cooldown);
-
-            m_IsComplete = false;
         }
 
-        public void TryActivateAbility(Pokemon instigator, Pokemon target)
-        {
-            if (CanActivateAbility())
-            {
-                ActivateAbility(instigator, target);
-            }
-        }
+        public abstract IEnumerator ActivateAbility(Pokemon instigator, Pokemon target);
 
-        protected abstract void ActivateAbility(Pokemon instigator, Pokemon target);
-
-        protected virtual bool IsComplete()
-        {
-            return m_IsComplete;
-        }
-
-        protected virtual bool CanActivateAbility()
+        public virtual bool CanActivateAbility()
         {
             return CheckAbilityCost() && CheckAbilityCooldown();
         }
@@ -54,4 +38,20 @@ namespace Umbreon
             return cooldown.currentValue <= 0;
         }
     }
+
+    public class AbilitySpecResult
+    {
+        public string message;
+        public bool success;
+    }
 }
+
+/*
+         public IEnumerator TryActivateAbility(Pokemon instigator, Pokemon target)
+        {
+            if (CanActivateAbility())
+            {                
+                yield return ActivateAbility(instigator, target);
+            }
+        } 
+ */ 

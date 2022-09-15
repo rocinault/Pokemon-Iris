@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.UI;
 
-using Golem;
+using Slowbro;
 using Voltorb;
 
 namespace Iris
@@ -24,19 +25,12 @@ namespace Iris
         [SerializeField]
         private PlayerTrainerPanelSettings m_Settings = new PlayerTrainerPanelSettings();
 
-        public override void Hide()
+        public override IEnumerator Hide()
         {
-            AnimateExitTransition();
-        }
+            // 1.25f
+            yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.right * -128f, 0.1f, Space.Self, EasingType.linear);
 
-        protected override void AnimateExitTransition()
-        {
-            rectTransform.Move(rectTransform.anchoredPosition, Vector3.right * -128f, 1.5f, EasingType.linear, Space.Self);
-
-            var image = m_Settings.image;
-            var clip = m_Settings.clip;
-
-            image.Animate(clip);
+            gameObject.SetActive(false);
         }
     }
 }

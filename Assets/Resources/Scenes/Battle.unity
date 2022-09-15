@@ -3226,7 +3226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_GraphicsInterface: {fileID: 1272865691}
-  m_MoveRuntimeSet: {fileID: 0}
+  m_MoveRuntimeSet: {fileID: 11400000, guid: 760cf0f1a29a84eccae5967bbf75c9ff, type: 2}
   m_Player: {fileID: 1504916609}
   m_Enemy: {fileID: 906688995}
 --- !u!114 &1272865691
@@ -4018,7 +4018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 72, y: 32}
+  m_AnchoredPosition: {x: 76, y: 32}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504916607

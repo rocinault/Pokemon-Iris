@@ -56,6 +56,11 @@ namespace Iris
             m_TextProcessor.CleanupAndClearAllText();
         }
 
+        internal System.Collections.IEnumerator TypeTextCharByChar(string text)
+        {
+            yield return m_TextProcessor.TypeTextCharByChar(text);
+        }
+
         internal void PrintTextCharByChar(string text)
         {
             m_TextProcessor.PrintTextCharByChar(text);
@@ -67,3 +72,20 @@ namespace Iris
         }
     }
 }
+
+/*
+
+            Show<PlayerPanel>();
+            Show<EnemyPanel>();
+
+            yield return new Parallel().Build(
+                    m_PlayerPanel.rectTransform.Move(new Vector3(256f, 0f), Vector3.zero, 1.35f, Space.World, EasingType.linear),
+                    m_EnemyPanel.rectTransform.Move(new Vector3(-256f, 0f), Vector3.zero, 1.35f, Space.World, EasingType.linear)).Run();
+
+            Show<EnemyStatsPanel>();
+
+            yield return new Parallel().Build(
+                m_EnemyStatsPanel.rectTransform.Move(new Vector3(-128f, 0f), Vector3.zero, 0.5f, Space.World, EasingType.linear)
+                ).Run();
+
+ */ 

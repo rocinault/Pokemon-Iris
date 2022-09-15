@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -27,11 +28,16 @@ namespace Voltorb
 
         public void Show<T>(string name = null) where T : Graphic
         {
+            StartCoroutine(ShowEnumerator<T>(name));
+        }
+
+        public IEnumerator ShowEnumerator<T>(string name = null) where T : Graphic
+        {
             var key = name ?? typeof(T).Name;
 
             if (m_SceneGraphicReferences.ContainsKey(key))
             {
-                m_SceneGraphicReferences[key].Show();
+                yield return m_SceneGraphicReferences[key].Show();
             }
             else
             {
@@ -49,11 +55,16 @@ namespace Voltorb
 
         public void Hide<T>(string name = null) where T : Graphic
         {
+            StartCoroutine(HideEnumerator<T>(name));
+        }
+
+        public IEnumerator HideEnumerator<T>(string name = null) where T : Graphic
+        {
             var key = name ?? typeof(T).Name;
 
             if (m_SceneGraphicReferences.ContainsKey(key))
             {
-                m_SceneGraphicReferences[key].Hide();
+                yield return m_SceneGraphicReferences[key].Hide();
             }
             else
             {

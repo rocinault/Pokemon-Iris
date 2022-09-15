@@ -21,7 +21,7 @@ namespace Golem
 
         public virtual void Add(T item)
         {
-            if (m_Collection.Contains(item))
+            if (!m_Collection.Contains(item))
             {
                 m_Collection.Add(item);
             }

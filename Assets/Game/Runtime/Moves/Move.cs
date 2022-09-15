@@ -1,29 +1,31 @@
 using System;
+using System.Collections;
 
-using Golem;
+using UnityEngine;
+
 using Umbreon;
 
 namespace Iris
 {
-    internal abstract class Move : YieldCoroutine, IComparable
+    internal abstract class Move : IComparable
     {
+        public abstract IEnumerator Run();
+
         public abstract int CompareTo(object obj);
     }
 
     internal class Fight : Move
     {
-        private readonly BattleCoordinator m_Coordinator;
+        private readonly BattleGraphicsInterface m_GraphicsInterface;
 
         private readonly Pokemon m_Instigator;
         private readonly Pokemon m_Target;
 
         private readonly AbilitySpec m_AbilitySpec;
 
-        public override bool keepWaiting => throw new NotImplementedException();
-
-        internal Fight(BattleCoordinator coordinator, Pokemon instigator, Pokemon target, AbilitySpec abilitySpec)
+        internal Fight(BattleGraphicsInterface graphicsInterface, Pokemon instigator, Pokemon target, AbilitySpec abilitySpec)
         {
-            m_Coordinator = coordinator;
+            m_GraphicsInterface = graphicsInterface;
 
             m_Instigator = instigator;
             m_Target = target;
@@ -31,11 +33,10 @@ namespace Iris
             m_AbilitySpec = abilitySpec;
         }
 
-        protected override bool Update()
+        public override IEnumerator Run()
         {
-            m_AbilitySpec.TryActivateAbility(m_Instigator, m_Target);
 
-            return true;
+            yield return m_AbilitySpec.TryActivateAbility(m_Instigator, m_Target);
         }
 
         public override int CompareTo(object obj)

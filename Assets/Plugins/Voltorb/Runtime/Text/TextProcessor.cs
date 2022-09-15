@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,12 +31,12 @@ namespace Voltorb
 
         private const float kDelayBetweenPrintsInSeconds = 0.02f;
 
-        private IEnumerator TypeTextCharByChar(string text)
+        public IEnumerator TypeTextCharByChar(string text)
         {
             int count = 0;
             int length = text.Length;
 
-            while (count < length)
+            while (count < length) 
             {
                 count++;
 
