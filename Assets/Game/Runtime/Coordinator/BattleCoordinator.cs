@@ -14,10 +14,16 @@ namespace Iris
         private MoveRuntimeSet m_MoveRuntimeSet;
 
         [SerializeField]
-        private Trainer m_Player;
+        private Trainer m_PlayerTrainer;
 
         [SerializeField]
-        private Trainer m_Enemy;
+        private Combatant m_PlayerCombatant;
+
+        [SerializeField]
+        private Trainer m_EnemyTrainer;
+
+        [SerializeField]
+        private Combatant m_EnemyCombatant;
 
         private static readonly StateMachine<BattleState> s_StateMachine = new StateMachine<BattleState>();
 
@@ -61,24 +67,22 @@ namespace Iris
             s_StateMachine.ChangeState(stateToTransitionInto);
         }
 
-        internal bool TryGetPlayerActivePokemon(out Pokemon pokemon)
+        internal void GetPlayerActiveCombatant(out Combatant combatant)
         {
-            return m_Player.TryGetActivePokemon(out pokemon);
+            combatant = m_PlayerCombatant;
         }
 
-        internal bool TryGetEnemyActivePokemon(out Pokemon pokemon)
+        internal void GetEnemyActiveCombatant(out Combatant combatant)
         {
-            return m_Enemy.TryGetActivePokemon(out pokemon);
+            combatant = m_EnemyCombatant;
         }
 
         internal void AddFightMoveToRuntimeSet<T>(T item) where T : AbilitySpec
         {
-            m_Player.TryGetActivePokemon(out var instigator);
-            m_Enemy.TryGetActivePokemon(out var target);
+            m_MoveRuntimeSet.Add(new Fight(m_GraphicsInterface, m_PlayerCombatant, m_EnemyCombatant, item));
 
-            var fight = new Fight(m_GraphicsInterface, instigator, target, item);
-
-            m_MoveRuntimeSet.Add(fight);
+            // Enemy Attack
+            m_MoveRuntimeSet.Add(new Fight(m_GraphicsInterface, m_EnemyCombatant, m_PlayerCombatant, m_EnemyCombatant.pokemon.GetAllAbilities()[0]));
         }
 
         internal MoveRuntimeSet GetMoveRuntimeSet()
@@ -87,3 +91,17 @@ namespace Iris
         }
     }
 }
+
+/*
+
+        internal void GetPlayerActivePokemon(out Pokemon pokemon)
+        {
+            pokemon = m_PlayerCombatant.pokemon;
+        }
+
+        internal void GetEnemyActivePokemon(out Pokemon pokemon)
+        {
+            pokemon = m_EnemyCombatant.pokemon;
+        }
+
+ */ 

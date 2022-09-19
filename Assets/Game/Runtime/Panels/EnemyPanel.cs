@@ -11,7 +11,8 @@ namespace Iris
         {
             gameObject.SetActive(true);
 
-            yield return rectTransform.Translate(new Vector3(-256f, 0f), Vector3.zero, 0.1f, Space.World, EasingType.EaseOutSine);
+            // 2f.
+            yield return rectTransform.Translate(new Vector3(-256f, 0f), Vector3.zero, 2f, Space.World, EasingType.EaseOutSine);
         }
     }
 }

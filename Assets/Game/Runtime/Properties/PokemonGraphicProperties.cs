@@ -3,18 +3,18 @@ using Voltorb;
 
 namespace Iris
 {
-    internal sealed class PokemonGraphicProperties : GraphicProperties
+    internal sealed class CombatantGraphicProperties : GraphicProperties
     {
-        internal readonly Pokemon pokemon;
+        internal readonly Combatant combatant;
 
-        internal PokemonGraphicProperties(Pokemon pokemon)
+        internal CombatantGraphicProperties(Combatant combatant)
         {
-            this.pokemon = pokemon;
+            this.combatant = combatant;
         }
 
-        internal static PokemonGraphicProperties CreateProperties(Pokemon pokemon)
+        internal static CombatantGraphicProperties CreateProperties(Combatant combatant)
         {
-            return new PokemonGraphicProperties(pokemon);
+            return new CombatantGraphicProperties(combatant);
         }
     }
 }

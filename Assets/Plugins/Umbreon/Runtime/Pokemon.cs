@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Umbreon
 {
@@ -66,10 +67,12 @@ namespace Umbreon
 
         private void CreateStartupAttributes(ScriptablePokemon asset)
         {
-            health = new Attribute(asset.health);
-            attack= new Attribute(asset.attack);
-            defence = new Attribute(asset.defence);
-            speed = new Attribute(asset.speed);
+            health = new Attribute(CalculateHealthAttributeValue(asset.health));
+            attack= new Attribute(CalculateAttributeValue(asset.attack));
+            defence = new Attribute(CalculateAttributeValue(asset.defence));
+            speed = new Attribute(CalculateAttributeValue(asset.speed));
+
+            Debug.Log($"{name} HP{health.value} ATK:{attack.value} DEF:{defence.value} SPD:{speed.value}");
         }
 
         public bool TryGetAbility(int index, out AbilitySpec spec)
@@ -88,6 +91,16 @@ namespace Umbreon
         public AbilitySpec[] GetAllAbilities()
         {
             return m_Abilities;
+        }
+
+        private float CalculateHealthAttributeValue(float value)
+        {
+            return Mathf.Floor((2f * value + UnityEngine.Random.Range(0, 32) + Mathf.Floor(0f / 4f)) * level / 100) + level + 10f;
+        }
+
+        private float CalculateAttributeValue(float value)
+        {
+            return Mathf.Floor((Mathf.Floor((2f * value + UnityEngine.Random.Range(0, 32) + Mathf.Floor(0f / 4f)) * level / 100) + 5f) * 1f);
         }
     }
 }

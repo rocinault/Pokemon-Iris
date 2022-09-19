@@ -4,43 +4,43 @@ using Umbreon;
 
 namespace Iris
 {
-    internal class Trainer : Combatant
+    internal class Trainer : MonoBehaviour
     {
+        [SerializeField]
+        private ScriptablePokemon m_Asset;
+
         [SerializeField]
         private PokemonRuntimeSet m_PokemonRuntimeSet;
 
-        private Pokemon m_ActivePokemon;
+        [SerializeField]
+        private Combatant m_Combatant;
 
         private void Awake()
         {
-            CreateStartupPokemonParty();
+            CreateStartupPokemon();
         }
 
-        private void CreateStartupPokemonParty()
+        private void CreateStartupPokemon()
         {
             var pokemon = new Pokemon(m_Asset);
+
+            m_Combatant.pokemon = pokemon;
             m_PokemonRuntimeSet.Add(pokemon);
-
-            SetActivePokemon(pokemon);
         }
 
-        internal void SetActivePokemon(Pokemon pokemon)
+        internal Pokemon GetFirstPokemonThatIsNotFainted()
         {
-            m_ActivePokemon = pokemon;
-            m_ActivePokemon.isActive = true;
-        }
-
-        internal bool TryGetActivePokemon(out Pokemon pokemon)
-        {
-            pokemon = default;
-
-            if (m_ActivePokemon != null)
+            for (int i = 0; i < m_PokemonRuntimeSet.Count(); i++)
             {
-                pokemon = m_ActivePokemon;
-                return true;
+                var pokemon = m_PokemonRuntimeSet[i];
+
+                if (pokemon != null && pokemon.health.value > 0)
+                {
+                    return pokemon;
+                }
             }
 
-            return false;
+            throw new System.Exception("No non-fainted pokemon found!");
         }
     }
 }

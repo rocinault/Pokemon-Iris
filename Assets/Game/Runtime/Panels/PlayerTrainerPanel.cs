@@ -28,7 +28,7 @@ namespace Iris
         public override IEnumerator Hide()
         {
             // 1.25f
-            yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.right * -128f, 0.1f, Space.Self, EasingType.linear);
+            yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.right * -128f, 1.25f, Space.Self, EasingType.linear);
 
             gameObject.SetActive(false);
         }

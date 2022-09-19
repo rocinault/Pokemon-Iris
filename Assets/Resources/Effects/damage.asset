@@ -9,14 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 360aaa0e6d7f14ab59d27f5ca8ebcafb, type: 3}
-  m_Name: tackle
+  m_Script: {fileID: 11500000, guid: ecd9ac6d87bdb453796ec43c387217b6, type: 3}
+  m_Name: damage
   m_EditorClassIdentifier: 
-  m_AbilityName: TACKLE
-  m_Effect: {fileID: 11400000, guid: e5c3905a4600c422683241c15533a8ec, type: 2}
   m_Container:
     type: 0
     power: 35
     accuracy: 100
     modifiers: []
-  m_Sprite: {fileID: 21300000, guid: f3742f26662ad4495b57bc15ef6f7f83, type: 3}

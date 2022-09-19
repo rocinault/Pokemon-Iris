@@ -8,40 +8,24 @@ namespace Umbreon
         private string m_AbilityName;
 
         [SerializeField]
-        private uint m_Power;
+        private ScriptableEffect m_Effect;
 
         [SerializeField]
-        private uint m_Accuracy;
-
-        [SerializeField]
-        private uint m_Cost;
-
-        [SerializeField]
-        private uint m_Cooldown;
+        private Container m_Container = new Container();
 
         public string abilityName
         {
             get => m_AbilityName;
         }
 
-        public uint power
+        public ScriptableEffect effect
         {
-            get => m_Power;
+            get => m_Effect;
         }
 
-        public uint accuracy
+        public Container container
         {
-            get => m_Accuracy;
-        }
-
-        internal uint cost
-        {
-            get => m_Cost;
-        }
-
-        internal uint cooldown
-        {
-            get => m_Cooldown;
+            get => m_Container;
         }
 
         public abstract AbilitySpec CreateAbilitySpec();

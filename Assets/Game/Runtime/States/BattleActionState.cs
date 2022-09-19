@@ -32,6 +32,10 @@ namespace Iris
             {
                 yield return moveRuntimeSet[i].Run();
             }
+
+            moveRuntimeSet.Clear();
+
+            m_Coordinator.ChangeState(BattleState.wait);
         }
 
     }

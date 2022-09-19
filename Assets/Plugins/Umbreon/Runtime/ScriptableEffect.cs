@@ -6,50 +6,50 @@ namespace Umbreon
 {
     public enum EffectType
     {
-        Direct,
-        Temporary
+        direct,
+        temporary
     }
 
     public enum AttributeModifierType
     {
-        Add,
-        Subtract
+        target,
+        self
     }
 
-    public sealed class ScriptableEffect : ScriptableObject
+    public abstract class ScriptableEffect : ScriptableObject
     {
-        [SerializeField]
-        private Container m_Container = new Container();
-
-        public Container container
-        {
-            get => m_Container;
-        }
+        public abstract EffectSpec CreateEffectSpec(ScriptableAbility asset);
     }
 
     [Serializable]
     public struct Container
     {
         [SerializeField]
-        internal EffectType Type;
+        public EffectType type;
 
         [SerializeField]
-        internal EffectModifiers[] Modifiers;
+        public uint power;
 
         [SerializeField]
-        internal float Duration;
+        public uint accuracy;
+
+        [SerializeField]
+        public EffectModifiers[] modifiers;
+
+        //[SerializeField]
+        //internal uint duration;
     }
 
     [Serializable]
     public struct EffectModifiers
     {
         [SerializeField]
-        internal AttributeType Attribute;
+        internal AttributeType attribute;
 
         [SerializeField]
-        internal AttributeModifierType Type;
+        internal AttributeModifierType type;
 
         [SerializeField]
-        internal float Multiplier;
+        internal uint multiplier;
     }
 }

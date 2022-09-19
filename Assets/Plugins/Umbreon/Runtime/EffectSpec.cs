@@ -2,18 +2,42 @@ using UnityEngine;
 
 namespace Umbreon
 {
-    public sealed class EffectSpec
+    public abstract class EffectSpec
     {
-        private readonly ScriptableEffect m_Asset;
+        public readonly ScriptableAbility asset;
 
-        public EffectSpec(ScriptableEffect asset)
+        public EffectSpec(ScriptableAbility asset)
         {
-            m_Asset = asset;
+            this.asset = asset;
         }
 
-        public bool TryRemoveEffectSpec()
+        public virtual void PreApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
         {
-            return true;
+            CanApplyEffectSpec(instigator, target, ref result);
+        }
+
+        public abstract void ApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result);
+
+        public virtual void PostApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
+        {
+
+        }
+
+        protected virtual bool CanApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
+        {
+            return CheckAbilityAccuracy(instigator.pokemon, target.pokemon, ref result);
+        }
+
+        private bool CheckAbilityAccuracy(Pokemon instigator, Pokemon target, ref SpecResult result)
+        {
+            result.success = (Random.value * 100f) < asset.container.accuracy;
+
+            if (!result.success)
+            {
+                result.message += string.Concat($"{instigator.name.ToUpper()}'s attack missed!\n");
+            }
+
+            return result.success;
         }
     }
 }

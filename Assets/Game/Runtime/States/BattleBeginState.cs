@@ -38,13 +38,13 @@ namespace Iris
                 m_GraphicsInterface.ShowEnumerator<EnemyPanel>(),
                 m_GraphicsInterface.ShowEnumerator<EnemyPokemonPanel>());
 
-            //yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.15f);
 
             yield return new Parallel(m_Coordinator,
                 m_GraphicsInterface.ShowEnumerator<EnemyStatsPanel>(),
                 PrintEncounterNameCharByChar());
 
-            //yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
             yield return new Sequence(m_Coordinator,
                 m_GraphicsInterface.HideEnumerator<PlayerTrainerPanel>(),
@@ -57,18 +57,18 @@ namespace Iris
 
         private void SetEnemyStatPanelProperties()
         {
-            m_Coordinator.TryGetEnemyActivePokemon(out var pokemon);
+            m_Coordinator.GetEnemyActiveCombatant(out var combatant);
 
-            var props = PokemonGraphicProperties.CreateProperties(pokemon);
+            var props = CombatantGraphicProperties.CreateProperties(combatant);
             m_GraphicsInterface.SetProperties(typeof(EnemyStatsPanel).Name, props);
             m_GraphicsInterface.SetProperties(typeof(EnemyPokemonPanel).Name, props);
         }
 
         private void SetPlayerStatPanelAndAbilityMenuProperties()
         {
-            m_Coordinator.TryGetPlayerActivePokemon(out var pokemon);
+            m_Coordinator.GetPlayerActiveCombatant(out var combatant);
 
-            var props = PokemonGraphicProperties.CreateProperties(pokemon);
+            var props = CombatantGraphicProperties.CreateProperties(combatant);
             m_GraphicsInterface.SetProperties(typeof(PlayerStatsPanel).Name, props);
             m_GraphicsInterface.SetProperties(typeof(PlayerPokemonPanel).Name, props);
             m_GraphicsInterface.SetProperties(typeof(AbilitiesMenu).Name, props);
@@ -76,9 +76,9 @@ namespace Iris
 
         private IEnumerator PrintEncounterNameCharByChar()
         {
-            m_Coordinator.TryGetEnemyActivePokemon(out var pokemon);
+            m_Coordinator.GetEnemyActiveCombatant(out var combatant);
 
-            string message = string.Concat($"A wild {pokemon.name.ToUpper()} appeared!");
+            string message = string.Concat($"A wild {combatant.pokemon.name.ToUpper()} appeared!");
 
             yield return m_GraphicsInterface.TypeTextCharByChar(message);
         }

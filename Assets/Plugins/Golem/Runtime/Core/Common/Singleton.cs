@@ -3,15 +3,15 @@ using UnityEditor;
 
 namespace Golem
 {
-    public abstract class Singleton<TInstance> : MonoBehaviour where TInstance : Singleton<TInstance>
+    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
-        public static TInstance instance
+        public static T instance
         {
             get
             {
                 if (s_Instance == null)
                 {
-                    s_Instance = FindObjectOfType<TInstance>();
+                    s_Instance = FindObjectOfType<T>();
 
                     if (s_Instance == null)
                     {
@@ -23,25 +23,25 @@ namespace Golem
             }
         }
 
-        private static TInstance s_Instance;
+        private static T s_Instance;
 
         protected virtual void Awake()
         {
             if (s_Instance == null)
             {
-                s_Instance = (TInstance)this;
+                s_Instance = (T)this;
             }
 #if UNITY_EDITOR
             else
             {
-                Debug.LogError(string.Concat($"Multiple instances of singelton type {typeof(TInstance).Name}"));
+                Debug.LogError(string.Concat($"Multiple instances of singleton type {typeof(T).Name}"));
             }
 #endif
         }
 
-        private static TInstance CreateHiddenGameObjectInstanceAndDontSave()
+        private static T CreateHiddenGameObjectInstanceAndDontSave()
         {
-            return EditorUtility.CreateGameObjectWithHideFlags(typeof(TInstance).Name, HideFlags.HideAndDontSave, typeof(TInstance)).GetComponent<TInstance>();
+            return EditorUtility.CreateGameObjectWithHideFlags(typeof(T).Name, HideFlags.HideAndDontSave, typeof(T)).GetComponent<T>();
         }
     }
 }

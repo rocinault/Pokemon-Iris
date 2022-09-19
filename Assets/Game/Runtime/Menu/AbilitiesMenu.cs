@@ -7,7 +7,7 @@ using Voltorb;
 
 namespace Iris
 {
-    internal sealed class AbilitiesMenu : Menu<PokemonGraphicProperties>
+    internal sealed class AbilitiesMenu : Menu<CombatantGraphicProperties>
     {
         [SerializeField]
         private Button[] m_AbilityButtons;
@@ -50,9 +50,9 @@ namespace Iris
             EventSystem.instance.Invoke(args);
         }
 
-        public override void SetProperties(PokemonGraphicProperties props)
+        public override void SetProperties(CombatantGraphicProperties props)
         {
-            m_Abilities = props.pokemon.GetAllAbilities();
+            m_Abilities = props.combatant.pokemon.GetAllAbilities();
 
             for (int i = 0; i < kMaxNumberOfAbilities; i++)
             {

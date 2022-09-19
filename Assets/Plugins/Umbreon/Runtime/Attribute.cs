@@ -1,3 +1,5 @@
+using System;
+
 namespace Umbreon
 {
     public enum AttributeType
@@ -10,22 +12,24 @@ namespace Umbreon
 
     public class Attribute
     {
-        public float currentValue
+        public float value
         {
-            get => m_CurrentValue;
+            get => m_Value;
+            set => m_Value = value;
         }
 
         public float maxValue
         {
             get => m_MaxValue;
+            set => m_MaxValue = value;
         }
 
-        private readonly float m_CurrentValue;
-        private readonly float m_MaxValue;
+        private float m_Value;
+        private float m_MaxValue;
 
         public Attribute(float value)
         {
-            m_CurrentValue = value;
+            m_Value = value;
             m_MaxValue = value;
         }
     }

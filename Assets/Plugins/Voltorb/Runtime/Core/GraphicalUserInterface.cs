@@ -95,6 +95,20 @@ namespace Voltorb
             }
         }
 
+        public T Get<T>(string name = null) where T : Graphic
+        {
+            var key = name ?? typeof(T).Name;
+
+            if (m_SceneGraphicReferences.ContainsKey(key))
+            {
+                return (T)m_SceneGraphicReferences[key];
+            }
+            else
+            {
+                throw new KeyNotFoundException($"key for type {key} was not registered");
+            }
+        }
+
         private void OnDestroy()
         {
             ClearAllSceneGraphicReferences();

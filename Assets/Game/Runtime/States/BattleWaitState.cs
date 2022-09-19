@@ -27,9 +27,9 @@ namespace Iris
 
         private void PrintPokemonNameAndShowMovesMenu()
         {
-            m_Coordinator.TryGetPlayerActivePokemon(out var pokemon);
+            m_Coordinator.GetPlayerActiveCombatant(out var combatant);
 
-            string message = string.Concat($"What will {pokemon.name.ToUpper()} do?");
+            string message = string.Concat($"What will {combatant.pokemon.name.ToUpper()} do?");
 
             m_GraphicsInterface.PrintCompletedText(message);
             m_GraphicsInterface.Show<MovesMenu>();

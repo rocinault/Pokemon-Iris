@@ -10,48 +10,76 @@ namespace Umbreon
     {
         public readonly ScriptableAbility asset;
 
-        public readonly Attribute cost;
-        public readonly Attribute cooldown;
-
         public AbilitySpec(ScriptableAbility asset)
         {
             this.asset = asset;
-
-            cost = new Attribute(asset.cost);
-            cooldown = new Attribute(asset.cooldown);
         }
 
-        public abstract IEnumerator ActivateAbility(Pokemon instigator, Pokemon target);
-
-        public virtual bool CanActivateAbility()
+        public virtual void PreAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
         {
-            return CheckAbilityCost() && CheckAbilityCooldown();
+            result = SpecResult.CreateSpecResult(string.Empty, true);
+
+            if (CanActivateAbility(ref result))
+            {
+                result.message = string.Concat($"{instigator.pokemon.name.ToUpper()} used {asset.abilityName}!\n");
+            }
         }
 
-        protected virtual bool CheckAbilityCost()
+        public abstract IEnumerator ActivateAbility(Combatant instigator, Combatant target);
+
+        public virtual void PostAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
         {
-            return cost.currentValue > 0;
+            result = SpecResult.CreateSpecResult(string.Empty, true);
         }
 
-        protected virtual bool CheckAbilityCooldown()
+        protected virtual bool CanActivateAbility(ref SpecResult result)
         {
-            return cooldown.currentValue <= 0;
+            return true;
         }
     }
 
-    public class AbilitySpecResult
+    public sealed class SpecResult
     {
         public string message;
         public bool success;
+
+        public SpecResult(string message, bool success)
+        {
+            this.message = message;
+            this.success = success;
+        }
+
+        public static SpecResult CreateSpecResult(string message, bool success)
+        {
+            return new SpecResult(message, success);
+        }
     }
 }
 
 /*
-         public IEnumerator TryActivateAbility(Pokemon instigator, Pokemon target)
+
+return CheckAbilityCost(ref result) && CheckAbilityCooldown(ref result);
+
+protected virtual bool CheckAbilityCost(ref SpecResult result)
         {
-            if (CanActivateAbility())
-            {                
-                yield return ActivateAbility(instigator, target);
+            // Not enough Pp.
+            if (cost.value <= 0)
+            {
+                result.message += string.Concat("Not enough Pp!");
+                result.success = false;
             }
+
+            return result.success;
+        }
+
+        protected virtual bool CheckAbilityCooldown(ref SpecResult result)
+        {
+            // On cooldown from use.
+            if (cooldown.value > 0)
+            {
+                result.success = false;
+            }
+
+            return result.success;
         } 
  */ 
