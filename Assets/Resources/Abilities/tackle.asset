@@ -17,6 +17,6 @@ MonoBehaviour:
   m_Container:
     type: 0
     power: 35
-    accuracy: 100
+    accuracy: 95
     modifiers: []
   m_Sprite: {fileID: 21300000, guid: f3742f26662ad4495b57bc15ef6f7f83, type: 3}

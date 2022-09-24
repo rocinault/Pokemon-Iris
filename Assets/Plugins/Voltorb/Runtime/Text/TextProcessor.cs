@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,11 +24,13 @@ namespace Voltorb
             }
         }
 
-        private WaitForSeconds m_WaitForSeconds = new WaitForSeconds(kDelayBetweenPrintsInSeconds);
+        private WaitForSeconds m_DelayBetweenChars = new WaitForSeconds(kDelayBetweenCharsInSeconds);
+        private WaitForSeconds m_DelayBetweenPunctuation = new WaitForSeconds(kDelayBetweenPunctuationInSeconds);
 
-        //private readonly static char[] s_PunctutationCharacters = new char[] { '.', ',', '!', '?' };
+        private readonly static char[] s_PunctutationCharacters = new char[] { '.', ',', '!', '?' };
 
-        private const float kDelayBetweenPrintsInSeconds = 0.02f;
+        private const float kDelayBetweenCharsInSeconds = 0.02f;
+        private const float kDelayBetweenPunctuationInSeconds = 0.08f;
 
         public IEnumerator TypeTextCharByChar(string text)
         {
@@ -42,7 +43,8 @@ namespace Voltorb
 
                 textComponent.text = text.Insert(count, "<color=#FFFFFF00>") + "</color>";
 
-                yield return m_WaitForSeconds;
+                yield return Array.Exists(s_PunctutationCharacters, (x) => x == text[count - 1]) ?
+                   m_DelayBetweenPunctuation : m_DelayBetweenChars;
             }
         }
 

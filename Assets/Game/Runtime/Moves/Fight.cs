@@ -75,13 +75,20 @@ namespace Iris
 
         public override int CompareTo(Move other)
         {
-            if (other.instigator.pokemon.speed.value < instigator.pokemon.speed.value)
+            if (instigator.pokemon.speed.value > other.instigator.pokemon.speed.value)
             {
                 return kInstigatorHasPriority;
             }
-            else if (UnityEngine.Random.value > 0.5f)
+            else if (instigator.pokemon.speed.value == other.instigator.pokemon.speed.value)
             {
-                return kInstigatorHasPriority;
+                if (UnityEngine.Random.value > 0.5f)
+                {
+                    return kInstigatorHasPriority;
+                }
+                else
+                {
+                    return kInstigatorDoesNotHavePriority;
+                }
             }
             else
             {
@@ -90,3 +97,20 @@ namespace Iris
         }
     }
 }
+
+/*
+
+                switch (target.affinity)
+                {
+                    case Affinity.friendly:
+                        yield return new Parallel(graphicsInterface,
+                            graphicsInterface.Get<PlayerPokemonPanel>().FlashPokemonImageOnDamage(),
+                            graphicsInterface.Get<PlayerStatsPanel>().ShakeStatsPanelAndSetHealthBarValue());
+                        break;
+                    case Affinity.hostile:
+                        yield return new Parallel(graphicsInterface,
+                            graphicsInterface.Get<EnemyPokemonPanel>().FlashPokemonImageOnDamage(),
+                            graphicsInterface.Get<EnemyStatsPanel>().ShakeStatsPanelAndSetHealthBarValue());
+                        break;
+                }
+ */ 

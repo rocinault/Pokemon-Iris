@@ -3,9 +3,23 @@ using UnityEngine.UI;
 
 namespace Umbreon
 {
+    public enum Affinity
+    {
+        friendly,
+        hostile
+    }
+
     [RequireComponent(typeof(RectTransform), typeof(Image))]
     public class Combatant : MonoBehaviour
     {
+        public Affinity affinity
+        {
+            get => m_Affinity;
+            set => m_Affinity = value;
+        }
+
+        private Affinity m_Affinity;
+
         public Pokemon pokemon
         {
             get

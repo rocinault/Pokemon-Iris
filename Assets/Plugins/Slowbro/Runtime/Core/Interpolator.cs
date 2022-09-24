@@ -22,6 +22,21 @@ namespace Slowbro
         }
     }
 
+    public struct FloatInterpolatorClamped : IInterpolator<float>
+    {
+        internal readonly EasingType easing;
+
+        internal FloatInterpolatorClamped(EasingType easing)
+        {
+            this.easing = easing;
+        }
+
+        public float Interpolate(float a, float b, float t)
+        {
+            return Mathf.RoundToInt(Mathf.LerpUnclamped(a, b, Easing.Resolve(easing, t)));
+        }
+    }
+
     public struct Vector3Interpolator : IInterpolator<Vector3>
     {
         internal readonly EasingType easing;

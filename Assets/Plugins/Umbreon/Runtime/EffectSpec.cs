@@ -11,26 +11,24 @@ namespace Umbreon
             this.asset = asset;
         }
 
-        public virtual void PreApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
+        public virtual void PreApplyEffectSpec(Pokemon instigator, Pokemon target, ref SpecResult result)
         {
             CanApplyEffectSpec(instigator, target, ref result);
         }
 
-        public abstract void ApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result);
-
-        public virtual void PostApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
+        public virtual void PostApplyEffectSpec(Pokemon instigator, Pokemon target, ref SpecResult result)
         {
 
         }
 
-        protected virtual bool CanApplyEffectSpec(Combatant instigator, Combatant target, ref SpecResult result)
+        protected virtual bool CanApplyEffectSpec(Pokemon instigator, Pokemon target, ref SpecResult result)
         {
-            return CheckAbilityAccuracy(instigator.pokemon, target.pokemon, ref result);
+            return CheckAbilityAccuracy(instigator, target, ref result);
         }
 
         private bool CheckAbilityAccuracy(Pokemon instigator, Pokemon target, ref SpecResult result)
         {
-            result.success = (Random.value * 100f) < asset.container.accuracy;
+            result.success = (Random.value * 100f) <= asset.container.accuracy;
 
             if (!result.success)
             {

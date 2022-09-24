@@ -2,6 +2,7 @@ using UnityEngine;
 
 using Umbreon;
 using Voltorb;
+using Slowbro;
 
 namespace Iris
 {
@@ -12,6 +13,9 @@ namespace Iris
 
         [SerializeField]
         private AbilitiesMenu m_AbilitiesMenu;
+
+        [SerializeField]
+        private LevelUpMenu m_LevelUpMenu;
 
         [SerializeField]
         private PlayerPanel m_PlayerPanel;
@@ -41,6 +45,7 @@ namespace Iris
         {
             Add(m_MovesMenu);
             Add(m_AbilitiesMenu);
+            Add(m_LevelUpMenu);
 
             Add(m_PlayerPanel);
             Add(m_PlayerStatsPanel);
@@ -62,6 +67,18 @@ namespace Iris
             yield return m_TextProcessor.TypeTextCharByChar(text);
         }
 
+        internal System.Collections.IEnumerator BouncePokemonAndStatsPanelWhileWaiting()
+        {
+            yield return new Parallel(this,
+                    m_PlayerPokemonPanel.rectTransform.Translate(m_PlayerPokemonPanel.rectTransform.anchoredPosition, Vector3.down, 1.2f, Space.Self, EasingType.PingPong),
+                    m_PlayerStatsPanel.rectTransform.Translate(m_PlayerStatsPanel.rectTransform.anchoredPosition, Vector3.down, 1.5f, Space.Self, EasingType.PingPong));
+        }
+
+        internal System.Collections.IEnumerator SetPlayerStatsPanelExperienceSlider(Pokemon pokemon)
+        {
+            yield return m_PlayerStatsPanel.SetExperienceBarValue(pokemon);
+        }
+
         internal void PrintTextCharByChar(string text)
         {
             m_TextProcessor.PrintTextCharByChar(text);
@@ -75,20 +92,3 @@ namespace Iris
         
     }
 }
-
-/*
-
-            Show<PlayerPanel>();
-            Show<EnemyPanel>();
-
-            yield return new Parallel().Build(
-                    m_PlayerPanel.rectTransform.Move(new Vector3(256f, 0f), Vector3.zero, 1.35f, Space.World, EasingType.linear),
-                    m_EnemyPanel.rectTransform.Move(new Vector3(-256f, 0f), Vector3.zero, 1.35f, Space.World, EasingType.linear)).Run();
-
-            Show<EnemyStatsPanel>();
-
-            yield return new Parallel().Build(
-                m_EnemyStatsPanel.rectTransform.Move(new Vector3(-128f, 0f), Vector3.zero, 0.5f, Space.World, EasingType.linear)
-                ).Run();
-
- */ 

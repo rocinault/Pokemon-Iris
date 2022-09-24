@@ -12,46 +12,46 @@ using Voltorb;
 namespace Iris
 {
     [RequireComponent(typeof(Image))]
-    internal sealed class PlayerPokemonPanel : Panel<CombatantGraphicProperties>
+    internal sealed class PlayerPokemonPanel : Panel<PokemonGraphicProperties>
     {
         [Serializable]
         private sealed class PlayerPokemonPanelSettings
         {
             [SerializeField]
             internal Image image;
+
+            [SerializeField]
+            internal Image overlay;
         }
 
         [SerializeField]
         private PlayerPokemonPanelSettings m_Settings = new PlayerPokemonPanelSettings();
 
-        private Combatant m_Combatant;
+        public override void SetProperties(PokemonGraphicProperties props)
+        {
+            m_Settings.image.sprite = props.pokemon.asset.spriteBack;
+        }
 
         public override IEnumerator Show()
         {
             gameObject.SetActive(true);
 
-            // 0.215f
-            yield return rectTransform.Scale(Vector3.zero, Vector3.one, 0.215f, Space.Self, EasingType.EaseOutSine);
+            m_Settings.overlay.gameObject.SetActive(true);
+
+            yield return new Parallel(this, m_Settings.overlay.material.Alpha(1f, 0.4f, EasingType.PingPong), m_Settings.image.material.Alpha(1f, 0.4f, EasingType.linear),
+                rectTransform.Scale(Vector3.zero, Vector3.one, 0.2f, Space.Self, EasingType.EaseOutSine));
+
+            m_Settings.overlay.gameObject.SetActive(false);
         }
 
-        public override void SetProperties(CombatantGraphicProperties props)
+        protected override void AddListeners()
         {
-            m_Combatant = props.combatant;
-
-            m_Settings.image.sprite = m_Combatant.pokemon.asset.spriteBack;
+            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
         }
 
-        private void OnEnable()
+        private void OnDamaged(DamagedEventArgs args)
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.AddListener<DamageEventArgs>(OnDamage);
-            }
-        }
-
-        private void OnDamage(DamageEventArgs args)
-        {
-            if (args.combatant == m_Combatant)
+            if (args.target.affinity == Affinity.friendly)
             {
                 StartCoroutine(FlashPokemonImageOnDamage());
             }
@@ -61,32 +61,21 @@ namespace Iris
         {
             for (int i = 0; i < 5; i++)
             {
-                yield return m_Settings.image.material.Alpha(0f, 0.1f, EasingType.PingPong);
+                yield return m_Settings.image.material.Flash(0f, 0.1f, EasingType.PingPong);
             }
         }
 
-        private void OnDisable()
+        protected override void RemoveListeners()
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.RemoveListener<DamageEventArgs>(OnDamage);
-            }
+            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
+        }
+
+        public override IEnumerator Hide()
+        {
+            yield return new Parallel(this, m_Settings.image.material.Alpha(0f, 0.35f, EasingType.linear),
+                rectTransform.Translate(rectTransform.anchoredPosition, Vector2.down * 64f, 0.35f, Space.Self, EasingType.EaseOutSine));
+
+            gameObject.SetActive(false);
         }
     }
 }
-
-/*
-         public override void Show()
-        {
-            base.Show();
-
-            AnimateEnterTransition();
-        }
-
-        protected override void AnimateEnterTransition()
-        {
-            rectTransform.Scale(Vector3.zero, Vector3.one, 0.4f, Space.Self, EasingType.EaseOutSine);
-
-            //rectTransform.LocalScale(Vector3.zero, Vector3.one, 0.4f, EasingType.EaseOutSine, Space.Self);
-        } 
- */ 

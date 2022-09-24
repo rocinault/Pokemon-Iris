@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 using Golem;
 using Voltorb;
 
@@ -22,6 +23,8 @@ namespace Iris
 
         protected override void AddListeners()
         {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(m_FightButton.gameObject);
+
             m_FightButton.onClick.AddListener(OnFightButtonClicked);
             m_BagButton.onClick.AddListener(OnBagButtonClicked);
             m_PokemonButton.onClick.AddListener(OnPokemonButtonClicked);

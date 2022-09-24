@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpriteFront: {fileID: 32781363, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_SpriteBack: {fileID: -1519500521, guid: 0df594e9698084007af817f95786d5bb, type: 3}
-  m_Health: 30
-  m_Attack: 56
+  m_Health: 795
+  m_Attack: 8
   m_Defence: 35
-  m_Speed: 72
+  m_Speed: 49
+  m_level: 3
+  m_Experience: 650
   m_Abilities:
   - m_Ability: {fileID: 11400000, guid: 93c2e4e16d94c4e9a82941f8c4252310, type: 2}
     m_LevelRequired: 0

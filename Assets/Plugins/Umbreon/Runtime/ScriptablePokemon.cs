@@ -26,6 +26,12 @@ namespace Umbreon
         private uint m_Speed;
 
         [SerializeField]
+        private uint m_level;
+
+        [SerializeField]
+        private uint m_Experience;
+
+        [SerializeField]
         private LevelRequiredAbility[] m_Abilities;
 
         public Sprite spriteFront
@@ -56,6 +62,16 @@ namespace Umbreon
         internal uint speed
         {
             get => m_Speed;
+        }
+
+        internal uint level
+        {
+            get => m_level;
+        }
+
+        public uint experience
+        {
+            get => m_Experience;
         }
 
         internal LevelRequiredAbility[] abilities

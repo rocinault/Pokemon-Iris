@@ -1,9 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
-
 namespace Umbreon
 {
     public abstract class AbilitySpec
@@ -25,7 +19,7 @@ namespace Umbreon
             }
         }
 
-        public abstract IEnumerator ActivateAbility(Combatant instigator, Combatant target);
+        public abstract System.Collections.IEnumerator ActivateAbility(Combatant instigator, Combatant target);
 
         public virtual void PostAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
         {
@@ -55,31 +49,3 @@ namespace Umbreon
         }
     }
 }
-
-/*
-
-return CheckAbilityCost(ref result) && CheckAbilityCooldown(ref result);
-
-protected virtual bool CheckAbilityCost(ref SpecResult result)
-        {
-            // Not enough Pp.
-            if (cost.value <= 0)
-            {
-                result.message += string.Concat("Not enough Pp!");
-                result.success = false;
-            }
-
-            return result.success;
-        }
-
-        protected virtual bool CheckAbilityCooldown(ref SpecResult result)
-        {
-            // On cooldown from use.
-            if (cooldown.value > 0)
-            {
-                result.success = false;
-            }
-
-            return result.success;
-        } 
- */ 

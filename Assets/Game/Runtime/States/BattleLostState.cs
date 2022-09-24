@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 
@@ -15,6 +16,16 @@ namespace Iris
         {
             m_GraphicsInterface = graphicsInterface;
             m_Coordinator = coordinator;
+        }
+
+        public override void Enter()
+        {
+            m_Coordinator.StartCoroutine(WildPokemonBattleLostEndSequence());
+        }
+
+        private IEnumerator WildPokemonBattleLostEndSequence()
+        {
+            yield return m_GraphicsInterface.HideEnumerator<PlayerPokemonPanel>();
         }
     }
 }

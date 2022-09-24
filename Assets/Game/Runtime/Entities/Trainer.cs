@@ -4,27 +4,18 @@ using Umbreon;
 
 namespace Iris
 {
-    internal class Trainer : MonoBehaviour
+    internal class Trainer : Summoner
     {
-        [SerializeField]
-        private ScriptablePokemon m_Asset;
-
         [SerializeField]
         private PokemonRuntimeSet m_PokemonRuntimeSet;
 
-        [SerializeField]
-        private Combatant m_Combatant;
-
-        private void Awake()
-        {
-            CreateStartupPokemon();
-        }
-
-        private void CreateStartupPokemon()
+        protected override void CreateStartupPokemon()
         {
             var pokemon = new Pokemon(m_Asset);
 
+            m_Combatant.affinity = Affinity.friendly;
             m_Combatant.pokemon = pokemon;
+
             m_PokemonRuntimeSet.Add(pokemon);
         }
 

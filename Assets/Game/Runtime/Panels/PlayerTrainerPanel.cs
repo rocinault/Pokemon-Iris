@@ -19,7 +19,10 @@ namespace Iris
             internal Image image;
 
             [SerializeField]
-            internal AnimationClip clip;
+            internal Sprite[] sprites;
+
+            [SerializeField, Range(0, 12)]
+            internal int frameRate = 6;
         }
 
         [SerializeField]
@@ -27,8 +30,9 @@ namespace Iris
 
         public override IEnumerator Hide()
         {
-            // 1.25f
-            yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.right * -128f, 1.25f, Space.Self, EasingType.linear);
+            // 1.75f
+            yield return new Parallel(this, m_Settings.image.Animate(m_Settings.sprites, m_Settings.frameRate),
+                rectTransform.Translate(rectTransform.anchoredPosition, Vector3.right * -128f, 1.75f, Space.Self, EasingType.linear));
 
             gameObject.SetActive(false);
         }

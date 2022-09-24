@@ -10,7 +10,7 @@ namespace Umbreon
         temporary
     }
 
-    public enum AttributeModifierType
+    public enum StatisticModifierType
     {
         target,
         self
@@ -44,12 +44,12 @@ namespace Umbreon
     public struct EffectModifiers
     {
         [SerializeField]
-        internal AttributeType attribute;
+        public StatisticType stat;
 
         [SerializeField]
-        internal AttributeModifierType type;
+        public StatisticModifierType target;
 
-        [SerializeField]
-        internal uint multiplier;
+        [SerializeField, Range(-2, 2)]
+        public int multiplier;
     }
 }

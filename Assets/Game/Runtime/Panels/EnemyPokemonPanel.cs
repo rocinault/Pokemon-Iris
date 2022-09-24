@@ -12,7 +12,7 @@ using Voltorb;
 namespace Iris
 {
     [RequireComponent(typeof(Image))]
-    internal sealed class EnemyPokemonPanel : Panel<CombatantGraphicProperties>
+    internal sealed class EnemyPokemonPanel : Panel<PokemonGraphicProperties>
     {
         [Serializable]
         private sealed class EnemyPokemonPanelSettings
@@ -24,26 +24,26 @@ namespace Iris
         [SerializeField]
         private EnemyPokemonPanelSettings m_Settings = new EnemyPokemonPanelSettings();
 
-        private Combatant m_Combatant;
-
-        public override void SetProperties(CombatantGraphicProperties props)
+        public override void SetProperties(PokemonGraphicProperties props)
         {
-            m_Combatant = props.combatant;
-
-            m_Settings.image.sprite = m_Combatant.pokemon.asset.spriteFront;
+            m_Settings.image.sprite = props.pokemon.asset.spriteFront;
         }
 
-        private void OnEnable()
+        public override IEnumerator Show()
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.AddListener<DamageEventArgs>(OnDamage);
-            }
+            gameObject.SetActive(true);
+
+            yield return new Parallel(this, m_Settings.image.material.Alpha(1f, 0.01f, EasingType.linear));
         }
 
-        private void OnDamage(DamageEventArgs args)
+        protected override void AddListeners()
         {
-            if (args.combatant == m_Combatant)
+            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
+        }
+
+        private void OnDamaged(DamagedEventArgs args)
+        {
+            if (args.target.affinity == Affinity.hostile)
             {
                 StartCoroutine(FlashPokemonImageOnDamage());
             }
@@ -53,16 +53,21 @@ namespace Iris
         {
             for (int i = 0; i < 5; i++)
             {
-                yield return m_Settings.image.material.Alpha(0f, 0.1f, EasingType.PingPong);
+                yield return m_Settings.image.material.Flash(0f, 0.1f, EasingType.PingPong);
             }
         }
 
-        private void OnDisable()
+        protected override void RemoveListeners()
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.RemoveListener<DamageEventArgs>(OnDamage);
-            }
+            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
+        }
+
+        public override IEnumerator Hide()
+        {
+            yield return new Parallel(this, m_Settings.image.material.Alpha(0f, 0.35f, EasingType.linear),
+                rectTransform.Translate(rectTransform.anchoredPosition, Vector2.down * 64f, 0.35f, Space.Self, EasingType.EaseOutSine));
+
+            gameObject.SetActive(false);
         }
     }
 }

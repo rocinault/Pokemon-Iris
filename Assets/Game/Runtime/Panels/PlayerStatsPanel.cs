@@ -11,7 +11,7 @@ using Voltorb;
 
 namespace Iris
 {
-    internal sealed class PlayerStatsPanel : Panel<CombatantGraphicProperties>
+    internal sealed class PlayerStatsPanel : Panel<PokemonGraphicProperties>
     {
         [Serializable]
         private sealed class StatsPanelSettings
@@ -35,20 +35,9 @@ namespace Iris
         [SerializeField]
         private StatsPanelSettings m_Settings = new StatsPanelSettings();
 
-        private Combatant m_Combatant;
-
-        public override IEnumerator Show()
+        public override void SetProperties(PokemonGraphicProperties props)
         {
-            gameObject.SetActive(true);
-
-            // 0.425f
-            yield return rectTransform.Translate(new Vector3(128f, 0f), Vector3.zero, 0.425f, Space.World, EasingType.linear);
-        }
-
-        public override void SetProperties(CombatantGraphicProperties props)
-        {
-            m_Combatant = props.combatant;
-            var pokemon = m_Combatant.pokemon;
+            var pokemon = props.pokemon;
 
             m_Settings.name.text = pokemon.name.ToUpper();
 
@@ -67,28 +56,45 @@ namespace Iris
 
             var experienceBar = m_Settings.experienceBar;
 
-            experienceBar.minValue = 0f;
-            experienceBar.maxValue = 1f;
-            experienceBar.value = 0.5f;
+            experienceBar.minValue = Mathf.Pow(pokemon.level, 3f);
+            experienceBar.maxValue = Mathf.Pow(pokemon.level + 1, 3f);
+            experienceBar.value = pokemon.experience;
         }
 
-        private void OnEnable()
+        public override IEnumerator Show()
         {
-            if (m_Combatant != null)
+            gameObject.SetActive(true);
+
+            yield return rectTransform.Translate(new Vector3(128f, 0f), Vector3.zero, 0.425f, Space.World, EasingType.linear);
+        }
+
+        protected override void AddListeners()
+        {
+            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
+        }
+
+        private void OnDamaged(DamagedEventArgs args)
+        {
+            var target = args.target;
+
+            if (target.affinity == Affinity.friendly)
             {
-                EventSystem.instance.AddListener<DamageEventArgs>(OnDamage);
+                StartCoroutine(ShakeStatsPanelAndSetHealthBarValue(target.pokemon));
             }
         }
 
-        private void OnDamage(DamageEventArgs args)
+        internal IEnumerator SetExperienceBarValue(Pokemon pokemon)
         {
-            if (args.combatant == m_Combatant)
-            {
-                StartCoroutine(ShakeStatsPanelAndSetHealthBarValue());
-            }
+            m_Settings.experienceBar.minValue = Mathf.Pow(pokemon.level, 3f);
+            m_Settings.experienceBar.maxValue = Mathf.Pow(Mathf.Min(pokemon.level + 1, 100f), 3f);
+
+            float difference = pokemon.experience - m_Settings.experienceBar.value;
+            float duration = 0.5f + (difference / 64f);
+
+            yield return m_Settings.experienceBar.Interpolate(pokemon.experience, duration, EasingType.EaseOutSine);
         }
 
-        private IEnumerator ShakeStatsPanelAndSetHealthBarValue()
+        private IEnumerator ShakeStatsPanelAndSetHealthBarValue(Pokemon pokemon)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -96,14 +102,14 @@ namespace Iris
             }
 
             int current = Mathf.FloorToInt(m_Settings.healthBar.value);
-            int target = Mathf.FloorToInt(m_Combatant.pokemon.health.value);
+            int target = Mathf.FloorToInt(pokemon.health.value);
             int max = Mathf.FloorToInt(m_Settings.healthBar.maxValue);
 
             int difference = current - target;
-            float duration = 1f + (difference / 64f);
+            float duration = 0.5f + (difference / 64f);
 
             yield return new Parallel(this, TypeHealthTextCharByChar(target, current, max),
-                    m_Settings.healthBar.Interpolate(m_Combatant.pokemon.health.value, duration, EasingType.EaseOutSine));
+                    m_Settings.healthBar.Interpolate(pokemon.health.value, duration, EasingType.EaseOutSine));
         }
 
         private IEnumerator TypeHealthTextCharByChar(int target, int current, int max)
@@ -122,12 +128,9 @@ namespace Iris
             }
         }
 
-        private void OnDisable()
+        protected override void RemoveListeners()
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.RemoveListener<DamageEventArgs>(OnDamage);
-            }
+            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
         }
     }
 }

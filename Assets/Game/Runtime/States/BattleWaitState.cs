@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 
 using UnityEngine;
 
 using Golem;
+using Slowbro;
 
 namespace Iris
 {
@@ -11,10 +13,14 @@ namespace Iris
         private readonly BattleGraphicsInterface m_GraphicsInterface;
         private readonly BattleCoordinator m_Coordinator;
 
+        private readonly IEnumerator m_Coroutine;
+
         public BattleWaitState(T uniqueID, BattleGraphicsInterface graphicsInterface, BattleCoordinator coordinator) : base(uniqueID)
         {
             m_GraphicsInterface = graphicsInterface;
             m_Coordinator = coordinator;
+
+            m_Coroutine = BouncePokemonAndStatsPanelWhileWaiting();
         }
 
         public override void Enter()
@@ -23,16 +29,26 @@ namespace Iris
             EventSystem.instance.AddListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
 
             PrintPokemonNameAndShowMovesMenu();
+
+            m_Coordinator.StartCoroutine(m_Coroutine);
         }
 
         private void PrintPokemonNameAndShowMovesMenu()
         {
-            m_Coordinator.GetPlayerActiveCombatant(out var combatant);
+            m_Coordinator.GetPlayerActivePokemon(out var combatant);
 
-            string message = string.Concat($"What will {combatant.pokemon.name.ToUpper()} do?");
+            string message = string.Concat($"What will {combatant.name.ToUpper()} do?");
 
             m_GraphicsInterface.PrintCompletedText(message);
             m_GraphicsInterface.Show<MovesMenu>();
+        }
+
+        private IEnumerator BouncePokemonAndStatsPanelWhileWaiting()
+        {
+            while (true)
+            {
+                yield return m_GraphicsInterface.BouncePokemonAndStatsPanelWhileWaiting();
+            }
         }
 
         private void OnMoveButtonClicked(MoveButtonClickedEventArgs args)
@@ -63,6 +79,8 @@ namespace Iris
 
         public override void Exit()
         {
+            m_Coordinator.StopCoroutine(m_Coroutine);
+
             ClearTextAndHideAbilitiesMenu();
 
             EventSystem.instance.RemoveListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);

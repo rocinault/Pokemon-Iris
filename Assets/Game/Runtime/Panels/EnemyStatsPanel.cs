@@ -11,7 +11,7 @@ using Voltorb;
 
 namespace Iris
 {
-    internal sealed class EnemyStatsPanel : Panel<CombatantGraphicProperties>
+    internal sealed class EnemyStatsPanel : Panel<PokemonGraphicProperties>
     {
         [Serializable]
         private sealed class StatsPanelSettings
@@ -29,25 +29,14 @@ namespace Iris
         [SerializeField]
         private StatsPanelSettings m_Settings = new StatsPanelSettings();
 
-        private Combatant m_Combatant;
-
-        public override IEnumerator Show()
+        public override void SetProperties(PokemonGraphicProperties props)
         {
-            gameObject.SetActive(true);
-
-            // 0.425f
-            yield return rectTransform.Translate(new Vector3(-128f, 0f), Vector3.zero, 0.425f, Space.World, EasingType.linear);
-        }
-
-        public override void SetProperties(CombatantGraphicProperties props)
-        {
-            m_Combatant = props.combatant;
-            var pokemon = m_Combatant.pokemon;
+            var pokemon = props.pokemon;
 
             m_Settings.name.text = pokemon.name.ToUpper();
 
             float level = pokemon.level;
-            m_Settings.level.text = FormatLevelText(level);
+            m_Settings.level.text = string.Concat($"Lv{level}");
 
             var healthBar = m_Settings.healthBar;
 
@@ -56,28 +45,29 @@ namespace Iris
             healthBar.value = pokemon.health.value;
         }
 
-        private static string FormatLevelText(float level)
+        public override IEnumerator Show()
         {
-            return string.Concat($"Lv{level}");
+            gameObject.SetActive(true);
+
+            yield return rectTransform.Translate(new Vector3(-128f, 0f), Vector3.zero, 0.425f, Space.World, EasingType.linear);
         }
 
-        private void OnEnable()
+        protected override void AddListeners()
         {
-            if (m_Combatant != null)
+            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
+        }
+
+        private void OnDamaged(DamagedEventArgs args)
+        {
+            var target = args.target;
+
+            if (target.affinity == Affinity.hostile)
             {
-                EventSystem.instance.AddListener<DamageEventArgs>(OnDamage);
+                StartCoroutine(ShakeStatsPanelAndSetHealthBarValue(target.pokemon));
             }
         }
 
-        private void OnDamage(DamageEventArgs args)
-        {
-            if (args.combatant == m_Combatant)
-            {
-                StartCoroutine(ShakeStatsPanelAndSetHealthBarValue());
-            }
-        }
-
-        private IEnumerator ShakeStatsPanelAndSetHealthBarValue()
+        private IEnumerator ShakeStatsPanelAndSetHealthBarValue(Pokemon pokemon)
         {
             for (int i = 0; i < 10; i++)
             {
@@ -85,20 +75,17 @@ namespace Iris
             }
 
             int current = Mathf.FloorToInt(m_Settings.healthBar.value);
-            int target = Mathf.FloorToInt(m_Combatant.pokemon.health.value);
+            int target = Mathf.FloorToInt(pokemon.health.value);
             int difference = current - target;
 
-            float duration = 1f + (difference / 32f);
+            float duration = 0.5f + (difference / 32f);
 
-            yield return m_Settings.healthBar.Interpolate(m_Combatant.pokemon.health.value, duration, EasingType.EaseOutSine);
+            yield return m_Settings.healthBar.Interpolate(pokemon.health.value, duration, EasingType.EaseOutSine);
         }
 
-        private void OnDisable()
+        protected override void RemoveListeners()
         {
-            if (m_Combatant != null)
-            {
-                EventSystem.instance.RemoveListener<DamageEventArgs>(OnDamage);
-            }
+            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
         }
     }
 }

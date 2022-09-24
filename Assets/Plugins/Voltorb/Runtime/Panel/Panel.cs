@@ -3,9 +3,9 @@
 namespace Voltorb
 {
     [RequireComponent(typeof(RectTransform))]
-    public abstract class Panel : Graphic
+    public abstract class Panel : Menu
     {
-        protected internal RectTransform rectTransform
+        public RectTransform rectTransform
         {
             get
             {
@@ -22,9 +22,9 @@ namespace Voltorb
     }
 
     [RequireComponent(typeof(RectTransform))]
-    public abstract class Panel<T> : Graphic<T> where T : GraphicProperties
+    public abstract class Panel<T> : Menu<T> where T : GraphicProperties
     {
-        protected internal RectTransform rectTransform
+        public RectTransform rectTransform
         {
             get
             {

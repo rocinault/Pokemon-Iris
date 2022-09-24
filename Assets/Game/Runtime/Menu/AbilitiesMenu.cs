@@ -7,7 +7,7 @@ using Voltorb;
 
 namespace Iris
 {
-    internal sealed class AbilitiesMenu : Menu<CombatantGraphicProperties>
+    internal sealed class AbilitiesMenu : Menu<PokemonGraphicProperties>
     {
         [SerializeField]
         private Button[] m_AbilityButtons;
@@ -18,8 +18,29 @@ namespace Iris
 
         private static string kNoValidAbility = "-";
 
+        public override void SetProperties(PokemonGraphicProperties props)
+        {
+            m_Abilities = props.pokemon.GetAllAbilities();
+
+            for (int i = 0; i < kMaxNumberOfAbilities; i++)
+            {
+                if (m_Abilities[i] != null)
+                {
+                    m_AbilityButtons[i].GetComponentInChildren<Text>().text = m_Abilities[i].asset.name.ToString().ToUpper();
+                    m_AbilityButtons[i].interactable = true;
+                }
+                else
+                {
+                    m_AbilityButtons[i].GetComponentInChildren<Text>().text = kNoValidAbility;
+                    m_AbilityButtons[i].interactable = false;
+                }
+            }
+        }
+
         protected override void AddListeners()
         {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(m_AbilityButtons[0].gameObject);
+
             m_AbilityButtons[0].onClick.AddListener(OnAbilityButtonOneClicked);
             m_AbilityButtons[1].onClick.AddListener(OnAbilityButtonTwoClicked);
             m_AbilityButtons[2].onClick.AddListener(OnAbilityButtonThreeClicked);
@@ -48,25 +69,6 @@ namespace Iris
         {
             var args = AbilityButtonClickedEventArgs.CreateEventArgs(m_Abilities[3]);
             EventSystem.instance.Invoke(args);
-        }
-
-        public override void SetProperties(CombatantGraphicProperties props)
-        {
-            m_Abilities = props.combatant.pokemon.GetAllAbilities();
-
-            for (int i = 0; i < kMaxNumberOfAbilities; i++)
-            {
-                if (m_Abilities[i] != null)
-                {
-                    m_AbilityButtons[i].GetComponentInChildren<Text>().text = m_Abilities[i].asset.name.ToString().ToUpper();
-                    m_AbilityButtons[i].interactable = true;
-                }
-                else
-                {
-                    m_AbilityButtons[i].GetComponentInChildren<Text>().text = kNoValidAbility;
-                    m_AbilityButtons[i].interactable = false;
-                }
-            }
         }
 
         protected override void RemoveListeners()
