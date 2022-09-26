@@ -29,20 +29,22 @@ namespace Iris
         [SerializeField]
         private StatsPanelSettings m_Settings = new StatsPanelSettings();
 
+        private Pokemon m_Pokemon;
+
         public override void SetProperties(PokemonGraphicProperties props)
         {
-            var pokemon = props.pokemon;
+            m_Pokemon = props.pokemon;
 
-            m_Settings.name.text = pokemon.name.ToUpper();
+            m_Settings.name.text = m_Pokemon.name.ToUpper();
 
-            float level = pokemon.level;
+            float level = m_Pokemon.level;
             m_Settings.level.text = string.Concat($"Lv{level}");
 
             var healthBar = m_Settings.healthBar;
 
             healthBar.minValue = 0f;
-            healthBar.maxValue = pokemon.health.maxValue;
-            healthBar.value = pokemon.health.value;
+            healthBar.maxValue = m_Pokemon.health.maxValue;
+            healthBar.value = m_Pokemon.health.value;
         }
 
         public override IEnumerator Show()
@@ -52,40 +54,23 @@ namespace Iris
             yield return rectTransform.Translate(new Vector3(-128f, 0f), Vector3.zero, 0.425f, Space.World, EasingType.linear);
         }
 
-        protected override void AddListeners()
+        internal IEnumerator SetHealthBarValue()
         {
-            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
-        }
-
-        private void OnDamaged(DamagedEventArgs args)
-        {
-            var target = args.target;
-
-            if (target.affinity == Affinity.hostile)
-            {
-                StartCoroutine(ShakeStatsPanelAndSetHealthBarValue(target.pokemon));
-            }
-        }
-
-        private IEnumerator ShakeStatsPanelAndSetHealthBarValue(Pokemon pokemon)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.down, 0.05f, Space.Self, EasingType.PingPong);
-            }
-
             int current = Mathf.FloorToInt(m_Settings.healthBar.value);
-            int target = Mathf.FloorToInt(pokemon.health.value);
+            int target = Mathf.FloorToInt(m_Pokemon.health.value);
             int difference = current - target;
 
             float duration = 0.5f + (difference / 32f);
 
-            yield return m_Settings.healthBar.Interpolate(pokemon.health.value, duration, EasingType.EaseOutSine);
+            yield return m_Settings.healthBar.Interpolate(m_Pokemon.health.value, duration, EasingType.EaseOutSine);
         }
 
-        protected override void RemoveListeners()
+        internal IEnumerator ShakeStatsPanel()
         {
-            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
+            for (int i = 0; i < 10; i++)
+            {
+                yield return rectTransform.Translate(rectTransform.anchoredPosition, Vector3.down, 0.05f, Space.Self, EasingType.PingPong);
+            }         
         }
     }
 }

@@ -44,30 +44,12 @@ namespace Iris
             m_Settings.overlay.gameObject.SetActive(false);
         }
 
-        protected override void AddListeners()
-        {
-            EventSystem.instance.AddListener<DamagedEventArgs>(OnDamaged);
-        }
-
-        private void OnDamaged(DamagedEventArgs args)
-        {
-            if (args.target.affinity == Affinity.friendly)
-            {
-                StartCoroutine(FlashPokemonImageOnDamage());
-            }
-        }
-
-        private IEnumerator FlashPokemonImageOnDamage()
+        internal IEnumerator FlashPokemonImageOnDamage()
         {
             for (int i = 0; i < 5; i++)
             {
                 yield return m_Settings.image.material.Flash(0f, 0.1f, EasingType.PingPong);
             }
-        }
-
-        protected override void RemoveListeners()
-        {
-            EventSystem.instance.RemoveListener<DamagedEventArgs>(OnDamaged);
         }
 
         public override IEnumerator Hide()

@@ -3,10 +3,13 @@ namespace Umbreon
     public abstract class AbilitySpec
     {
         public readonly ScriptableAbility asset;
+        public readonly EffectSpec effectSpec;
 
         public AbilitySpec(ScriptableAbility asset)
         {
             this.asset = asset;
+
+            effectSpec = asset.effect.CreateEffectSpec(asset);
         }
 
         public virtual void PreAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)

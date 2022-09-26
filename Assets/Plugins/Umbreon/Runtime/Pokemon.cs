@@ -16,8 +16,7 @@ namespace Umbreon
         public Statistic evasion = new Statistic();
         public Statistic accuracy = new Statistic();
 
-        public bool isActive;
-        public bool isAlive;
+        public bool isFainted => health.value <= 0;
 
         public uint level;
         public int experience;
@@ -97,20 +96,20 @@ namespace Umbreon
             Debug.Log($"{name} HP{health.maxValue} ATK:{attack.value} DEF:{defence.value} SPD:{speed.value}");
         }
 
-        public bool TryGetStatistic(StatisticType type, out Statistic statistic)
+        public bool TryGetStatistic(StatisticType statType, out Statistic statistic)
         {
-            switch (type)
+            switch (statType)
             {
-                case StatisticType.health:
+                case StatisticType.Health:
                     statistic = health;
                     break;
-                case StatisticType.attack:
+                case StatisticType.Attack:
                     statistic = attack;
                     break;
-                case StatisticType.defence:
+                case StatisticType.Defence:
                     statistic = defence;
                     break;
-                case StatisticType.speed:
+                case StatisticType.Speed:
                     statistic = speed;
                     break;
                 default:

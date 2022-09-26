@@ -6,14 +6,14 @@ namespace Umbreon
 {
     public enum EffectType
     {
-        direct,
-        temporary
+        Direct,
+        Temporary
     }
 
-    public enum StatisticModifierType
+    public enum EffectModifierType
     {
-        target,
-        self
+        Target,
+        Self
     }
 
     public abstract class ScriptableEffect : ScriptableObject
@@ -35,9 +35,6 @@ namespace Umbreon
 
         [SerializeField]
         public EffectModifiers[] modifiers;
-
-        //[SerializeField]
-        //internal uint duration;
     }
 
     [Serializable]
@@ -47,7 +44,7 @@ namespace Umbreon
         public StatisticType stat;
 
         [SerializeField]
-        public StatisticModifierType target;
+        public EffectModifierType target;
 
         [SerializeField, Range(-2, 2)]
         public int multiplier;

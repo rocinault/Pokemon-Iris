@@ -33,25 +33,25 @@ namespace Iris
 
         private void OnFightButtonClicked()
         {
-            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.fight);
+            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.Fight);
             EventSystem.instance.Invoke(args);
         }
 
         private void OnBagButtonClicked()
         {
-            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.bag);
+            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.Bag);
             EventSystem.instance.Invoke(args);
         }
 
         private void OnPokemonButtonClicked()
         {
-            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.pokemon);
+            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.Pokemon);
             EventSystem.instance.Invoke(args);
         }
 
         private void OnRunButtonClicked()
         {
-            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.run);
+            var args = MoveButtonClickedEventArgs.CreateEventArgs(MoveSelection.Run);
             EventSystem.instance.Invoke(args);
         }
 

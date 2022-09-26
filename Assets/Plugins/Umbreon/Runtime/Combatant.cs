@@ -5,8 +5,8 @@ namespace Umbreon
 {
     public enum Affinity
     {
-        friendly,
-        hostile
+        Friendly,
+        Hostile
     }
 
     [RequireComponent(typeof(RectTransform), typeof(Image))]

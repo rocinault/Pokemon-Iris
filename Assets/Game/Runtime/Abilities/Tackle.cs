@@ -1,5 +1,3 @@
-using UnityEditor;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,16 +14,16 @@ namespace Iris
 
         public override AbilitySpec CreateAbilitySpec()
         {
-            return new TackleAbilitySpec(this);
+            return new TackleAbilitySpec(this, m_Sprite);
         }
 
         private sealed class TackleAbilitySpec : AbilitySpec
         {
-            private readonly EffectSpec m_EffectSpec;
+            private readonly Sprite m_Sprite;
 
-            public TackleAbilitySpec(ScriptableAbility asset) : base(asset)
+            public TackleAbilitySpec(ScriptableAbility asset, Sprite sprite) : base(asset)
             {
-                m_EffectSpec = asset.effect.CreateEffectSpec(asset);
+                m_Sprite = sprite;
             }
 
             public override void PreAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
@@ -34,7 +32,7 @@ namespace Iris
 
                 if (result.success)
                 {
-                    m_EffectSpec.PreApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
+                    effectSpec.PreApplyEffectSpec(instigator, target, ref result);
                 }
             }
 
@@ -47,21 +45,11 @@ namespace Iris
 
                 yield return instigator.rectTransform.Translate(position, Vector3.right * 15f * direction, 0.175f, Space.Self, EasingType.PingPong);
 
-                var image = CreateHiddenGameObjectInstanceAndDontSave<Image>();
+                var image = GameObjectUtility.CreateGameobjectWithHideFlagsOnCanvas<Image>(target.rectTransform);
 
-                image.transform.SetParent(target.transform.parent);
-
-                image.rectTransform.anchorMin = target.rectTransform.anchorMin;
-                image.rectTransform.anchorMax = target.rectTransform.anchorMax;
-
-                image.rectTransform.pivot = target.rectTransform.pivot;
-
-                image.rectTransform.position = target.rectTransform.position;
-                image.rectTransform.localScale = target.rectTransform.localScale;
-                image.rectTransform.sizeDelta = ((Tackle)asset).m_Sprite.rect.size;
-
-                image.sprite = ((Tackle)asset).m_Sprite;
-                image.color = new Color(1f, 1f, 1f, 0.75f);
+                image.rectTransform.sizeDelta = m_Sprite.rect.size;
+                image.sprite = m_Sprite;
+                image.color = Color.white.AlphaMultiplied(0.75f);
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -72,20 +60,6 @@ namespace Iris
                 Destroy(image.gameObject);
             }
 
-            public override void PostAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
-            {
-                base.PostAbilityActivate(instigator, target, out result);
-
-                if (result.success)
-                {
-                    m_EffectSpec.PostApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
-                }
-            }
-
-            private static T CreateHiddenGameObjectInstanceAndDontSave<T>()
-            {
-                return EditorUtility.CreateGameObjectWithHideFlags(typeof(T).Name, HideFlags.HideAndDontSave, typeof(T)).GetComponent<T>();
-            }
         }
     }
 }

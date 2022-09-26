@@ -3,6 +3,7 @@ using System.Collections;
 
 using UnityEngine;
 
+using Slowbro;
 using Umbreon;
 
 namespace Iris
@@ -13,11 +14,9 @@ namespace Iris
 
         private readonly WaitForSeconds m_DelayForHalfSecond = new WaitForSeconds(kDelayForHalfSecond);
         private readonly WaitForSeconds m_DelayForOneSecond = new WaitForSeconds(kDelayForOneSecond);
-        private readonly WaitForSeconds m_DelayForTwoSeconds = new WaitForSeconds(kDelayForTwoSeconds);
 
         private const float kDelayForHalfSecond = 0.5f;
         private const float kDelayForOneSecond = 1f;
-        private const float kDelayForTwoSeconds = 2f;
 
         private const int kInstigatorHasPriority = -1;
         private const int kInstigatorDoesNotHavePriority = 1;
@@ -27,6 +26,7 @@ namespace Iris
             m_AbilitySpec = abilitySpec;
         }
 
+        // Find a better way to check the type of effect that is being run, this shit sucks ass.
         public override IEnumerator Run()
         {
             m_AbilitySpec.PreAbilityActivate(instigator, target, out SpecResult result);
@@ -37,13 +37,29 @@ namespace Iris
             {
                 yield return m_AbilitySpec.ActivateAbility(instigator, target);
 
+                // Get a list of the effects, then sort it, run the correct routine based on the type.
+
                 yield return m_DelayForHalfSecond;
 
-                m_AbilitySpec.PostAbilityActivate(instigator, target, out result);
+                yield return m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator, target, result);
 
-                yield return m_DelayForTwoSeconds;
+                // Consider moving this to the actual classes then all of this checking bs can be avoided.
+                //if (m_AbilitySpec.asset.effect.GetType() == typeof(Damage))
+                //{
+                //    result.message = string.Empty;
 
-                yield return TypeSpecResultMessagesCharByCharWithOneSecondDelay(result);
+                //    m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
+
+                //    yield return OnDamageEffectSpec(result);
+                //}
+                //else if (m_AbilitySpec.asset.effect.GetType() == typeof(Status))
+                //{
+                //    result.message = string.Empty;
+
+                //    m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
+
+                //    yield return OnStatusEffectSpec(result);
+                //}
             }
 
             graphicsInterface.CleanupTextProcessorAndClearText();
@@ -97,20 +113,3 @@ namespace Iris
         }
     }
 }
-
-/*
-
-                switch (target.affinity)
-                {
-                    case Affinity.friendly:
-                        yield return new Parallel(graphicsInterface,
-                            graphicsInterface.Get<PlayerPokemonPanel>().FlashPokemonImageOnDamage(),
-                            graphicsInterface.Get<PlayerStatsPanel>().ShakeStatsPanelAndSetHealthBarValue());
-                        break;
-                    case Affinity.hostile:
-                        yield return new Parallel(graphicsInterface,
-                            graphicsInterface.Get<EnemyPokemonPanel>().FlashPokemonImageOnDamage(),
-                            graphicsInterface.Get<EnemyStatsPanel>().ShakeStatsPanelAndSetHealthBarValue());
-                        break;
-                }
- */ 

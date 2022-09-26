@@ -4,6 +4,13 @@ namespace Voltorb
 {
     public abstract class Graphic : MonoBehaviour
     {
+        public virtual bool isAnimating
+        {
+            get => m_IsAnimating;
+        }
+
+        protected internal bool m_IsAnimating;
+
         public virtual System.Collections.IEnumerator Show()
         {
             gameObject.SetActive(true);

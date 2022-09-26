@@ -1,7 +1,4 @@
-using UnityEditor;
-
 using UnityEngine;
-using UnityEngine.UI;
 
 using Slowbro;
 using Umbreon;
@@ -12,20 +9,20 @@ namespace Iris
     internal sealed class Growl : ScriptableAbility
     {
         [SerializeField]
-        private GameObject m_Asset;
+        private GameObject m_Prefab;
 
         public override AbilitySpec CreateAbilitySpec()
         {
-            return new GrowlAbilitySpec(this);
+            return new GrowlAbilitySpec(this, m_Prefab);
         }
 
         private sealed class GrowlAbilitySpec : AbilitySpec
         {
-            private readonly EffectSpec m_EffectSpec;
+            private readonly GameObject m_Prefab;
 
-            public GrowlAbilitySpec(ScriptableAbility asset) : base(asset)
+            public GrowlAbilitySpec(ScriptableAbility asset, GameObject prefab) : base(asset)
             {
-                m_EffectSpec = asset.effect.CreateEffectSpec(asset);
+                m_Prefab = prefab;
             }
 
             public override void PreAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
@@ -34,7 +31,7 @@ namespace Iris
 
                 if (result.success)
                 {
-                    m_EffectSpec.PreApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
+                    effectSpec.PreApplyEffectSpec(instigator, target, ref result);
                 }
             }
 
@@ -45,19 +42,7 @@ namespace Iris
 
                 float direction = Mathf.Clamp(Vector2.Dot(Vector2.up, offset - position), -1, 1);
 
-                var instance = Instantiate(((Growl)asset).m_Asset).GetComponent<RectTransform>();
-
-                instance.SetParent(instigator.transform.parent);
-                instance.gameObject.hideFlags = HideFlags.HideAndDontSave;
-
-                instance.anchorMin = instigator.rectTransform.anchorMin;
-                instance.anchorMax = instigator.rectTransform.anchorMax;
-
-                instance.pivot = instigator.rectTransform.pivot;
-
-                instance.position = instigator.rectTransform.position;
-                instance.localScale = instigator.rectTransform.localScale;
-                instance.sizeDelta = instigator.rectTransform.sizeDelta;
+                var instance = GameObjectUtility.CreateGameobjectWithHideFlagsOnCanvas<RectTransform>(m_Prefab, instigator.rectTransform);
 
                 instance.anchoredPosition += new Vector2(instance.sizeDelta.x / 4, instance.sizeDelta.y / 16) * direction;
 
@@ -87,16 +72,6 @@ namespace Iris
                 }
 
                 Destroy(instance.gameObject);
-            }
-
-            public override void PostAbilityActivate(Combatant instigator, Combatant target, out SpecResult result)
-            {
-                base.PostAbilityActivate(instigator, target, out result);
-
-                if (result.success)
-                {
-                    m_EffectSpec.PostApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
-                }
             }
 
         }

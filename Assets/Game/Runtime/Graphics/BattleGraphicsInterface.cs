@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+
 using UnityEngine;
 
 using Umbreon;
@@ -57,26 +60,52 @@ namespace Iris
             Add(m_EnemyPokemonPanel);
         }
 
-        internal void CleanupTextProcessorAndClearText()
-        {
-            m_TextProcessor.CleanupAndClearAllText();
-        }
-
-        internal System.Collections.IEnumerator TypeTextCharByChar(string text)
-        {
-            yield return m_TextProcessor.TypeTextCharByChar(text);
-        }
-
-        internal System.Collections.IEnumerator BouncePokemonAndStatsPanelWhileWaiting()
+        internal IEnumerator BouncePokemonAndStatsPanelWhileWaiting()
         {
             yield return new Parallel(this,
                     m_PlayerPokemonPanel.rectTransform.Translate(m_PlayerPokemonPanel.rectTransform.anchoredPosition, Vector3.down, 1.2f, Space.Self, EasingType.PingPong),
                     m_PlayerStatsPanel.rectTransform.Translate(m_PlayerStatsPanel.rectTransform.anchoredPosition, Vector3.down, 1.5f, Space.Self, EasingType.PingPong));
         }
 
-        internal System.Collections.IEnumerator SetPlayerStatsPanelExperienceSlider(Pokemon pokemon)
+        internal IEnumerator SetPlayerStatsPanelExperienceSlider()
         {
-            yield return m_PlayerStatsPanel.SetExperienceBarValue(pokemon);
+            yield return m_PlayerStatsPanel.SetExperienceBarValue();
+        }
+
+        internal IEnumerator SetPlayerStatsPanelHealthSlider()
+        {
+            yield return m_PlayerStatsPanel.SetHealthBarValue();
+        }
+
+        internal IEnumerator ShakePlayerStatsPanel()
+        {
+            yield return m_PlayerStatsPanel.ShakeStatsPanel();
+        }
+
+        internal IEnumerator FlashPlayerPokemonImageOnDamage()
+        {
+            yield return m_PlayerPokemonPanel.FlashPokemonImageOnDamage();
+        }
+
+
+        internal IEnumerator SetEnemyStatsPanelHealthSlider()
+        {
+            yield return m_EnemyStatsPanel.SetHealthBarValue();
+        }
+
+        internal IEnumerator ShakeEnemyStatsPanel()
+        {
+            yield return m_EnemyStatsPanel.ShakeStatsPanel();
+        }
+
+        internal IEnumerator FlashEnemyPokemonImageOnDamage()
+        {
+            yield return m_EnemyPokemonPanel.FlashPokemonImageOnDamage();
+        }
+
+        internal IEnumerator TypeTextCharByChar(string text)
+        {
+            yield return m_TextProcessor.TypeTextCharByChar(text);
         }
 
         internal void PrintTextCharByChar(string text)
@@ -89,6 +118,10 @@ namespace Iris
             m_TextProcessor.PrintCompletedText(text);
         }
 
-        
+        internal void CleanupTextProcessorAndClearText()
+        {
+            m_TextProcessor.CleanupAndClearAllText();
+        }
+
     }
 }

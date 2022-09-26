@@ -57,7 +57,7 @@ namespace Iris
 
             switch (selection)
             {
-                case MoveSelection.fight:
+                case MoveSelection.Fight:
                     HideMovesMenuAndShowAbilitiesMenu();
                     break;
                 default:
@@ -74,7 +74,7 @@ namespace Iris
         private void OnAbilityButtonClicked(AbilityButtonClickedEventArgs args)
         {
             m_Coordinator.AddFightMoveToRuntimeSet(args.abilitySpec);
-            m_Coordinator.ChangeState(BattleState.action);
+            m_Coordinator.ChangeState(BattleState.Action);
         }
 
         public override void Exit()

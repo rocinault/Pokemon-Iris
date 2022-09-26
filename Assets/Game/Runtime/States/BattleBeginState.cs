@@ -56,7 +56,7 @@ namespace Iris
 
             yield return m_DelayForHalfSecond;
 
-            m_Coordinator.ChangeState(BattleState.wait);
+            m_Coordinator.ChangeState(BattleState.Wait);
         }
 
         private IEnumerator PrintEncounterNameCharByChar()

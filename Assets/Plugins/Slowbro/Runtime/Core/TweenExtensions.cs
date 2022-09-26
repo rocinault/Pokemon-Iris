@@ -17,6 +17,12 @@ namespace Slowbro
                 .Initialise(material).SetStart(material.GetFloat("_Alpha")).SetEnd(end).SetDuration(duration).SetInterpolation(new FloatInterpolatorClamped(easing)).Run();
         }
 
+        public static Tween<Material, float> Overlay(this Material material, Texture texture, float blend, float offset, float duration, EasingType easing)
+        {
+            return (Tween<Material, float>)new Tween<Material, float>((o) => o.GetFloat("_Blend"), (o, v) => { o.SetFloat("_Blend", v); o.SetFloat("_Offset", offset); o.SetTexture("_OverlayTex", texture); })
+                .Initialise(material).SetStart(material.GetFloat("_Blend")).SetEnd(blend).SetDuration(duration).SetInterpolation(new FloatInterpolator(easing)).Run();
+        }
+
         public static Tween<Slider, float> Interpolate(this Slider slider, float end, float duration, EasingType easing)
         {
             return (Tween<Slider, float>)new Tween<Slider, float>((o) => o.value, (o, v) => o.value = v)

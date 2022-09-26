@@ -32,29 +32,27 @@ namespace Iris
         {
             var moveRuntimeSet = m_Coordinator.GetMoveRuntimeSet();
 
-            int count = moveRuntimeSet.Count();
-
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < moveRuntimeSet.Count(); i++)
             {
                 yield return moveRuntimeSet[i].Run();
 
                 var target = moveRuntimeSet[i].target;
 
-                if (target.pokemon.health.value <= 0)
+                if (target.pokemon.isFainted)
                 {
                     switch (target.affinity)
                     {
-                        case Affinity.hostile:
-                            m_Coordinator.ChangeState(BattleState.won);
+                        case Affinity.Hostile:
+                            m_Coordinator.ChangeState(BattleState.Won);
                             yield break;
-                        case Affinity.friendly:
-                            m_Coordinator.ChangeState(BattleState.lost);
+                        case Affinity.Friendly:
+                            m_Coordinator.ChangeState(BattleState.Lost);
                             yield break;
                     }
                 }
             }
 
-            m_Coordinator.ChangeState(BattleState.wait);
+            m_Coordinator.ChangeState(BattleState.Wait);
         }
 
         public override void Exit()

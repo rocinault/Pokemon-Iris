@@ -2,10 +2,10 @@
 {
     internal enum BattleState
     {
-        begin,
-        wait,
-        action,
-        won,
-        lost
+        Begin,
+        Wait,
+        Action,
+        Won,
+        Lost
     }
 }

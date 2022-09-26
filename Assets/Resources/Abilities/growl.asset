@@ -22,7 +22,4 @@ MonoBehaviour:
     - stat: 1
       target: 0
       multiplier: -1
-    - stat: 1
-      target: 1
-      multiplier: 2
-  m_Asset: {fileID: 3918369413256785973, guid: 5b7f40b3fa8f142b68d42a0ad78dfc18, type: 3}
+  m_Prefab: {fileID: 3918369413256785973, guid: 5b7f40b3fa8f142b68d42a0ad78dfc18, type: 3}

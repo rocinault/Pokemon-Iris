@@ -13,7 +13,7 @@ namespace Iris
         {
             var pokemon = new Pokemon(m_Asset);
 
-            m_Combatant.affinity = Affinity.friendly;
+            m_Combatant.affinity = Affinity.Friendly;
             m_Combatant.pokemon = pokemon;
 
             m_PokemonRuntimeSet.Add(pokemon);

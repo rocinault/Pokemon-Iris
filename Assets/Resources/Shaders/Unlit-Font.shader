@@ -1,4 +1,4 @@
-Shader "Unlit/CustomDefaultFont"
+Shader "Unlit/Font"
 {
     Properties
     {

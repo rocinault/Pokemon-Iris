@@ -37,11 +37,11 @@ namespace Iris
         {
             var states = new IState<BattleState>[]
             {
-                new BattleBeginState<BattleState>(BattleState.begin, m_GraphicsInterface, this),
-                new BattleWaitState<BattleState>(BattleState.wait, m_GraphicsInterface, this),
-                new BattleActionState<BattleState>(BattleState.action, m_GraphicsInterface, this),
-                new BattleWonState<BattleState>(BattleState.won, m_GraphicsInterface, this),
-                new BattleLostState<BattleState>(BattleState.lost, m_GraphicsInterface, this)
+                new BattleBeginState<BattleState>(BattleState.Begin, m_GraphicsInterface, this),
+                new BattleWaitState<BattleState>(BattleState.Wait, m_GraphicsInterface, this),
+                new BattleActionState<BattleState>(BattleState.Action, m_GraphicsInterface, this),
+                new BattleWonState<BattleState>(BattleState.Won, m_GraphicsInterface, this),
+                new BattleLostState<BattleState>(BattleState.Lost, m_GraphicsInterface, this)
             };
 
             s_StateMachine.AddStatesToStateMachine(states);
@@ -49,7 +49,7 @@ namespace Iris
 
         private void SetBattleEnterState()
         {
-            s_StateMachine.SetCurrentStateID(BattleState.begin);
+            s_StateMachine.SetCurrentStateID(BattleState.Begin);
         }
 
         private void Start()

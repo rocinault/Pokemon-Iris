@@ -4,10 +4,10 @@ namespace Umbreon
 {
     public enum StatisticType
     {
-        health,
-        attack,
-        defence,
-        speed
+        Health,
+        Attack,
+        Defence,
+        Speed
     }
 
     public class Statistic

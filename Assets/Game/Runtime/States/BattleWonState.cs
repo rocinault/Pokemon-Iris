@@ -31,7 +31,6 @@ namespace Iris
         private IEnumerator WildPokemonBattleWonEndSequence()
         {
             yield return m_DelayForHalfSecond;
-            yield return m_DelayForHalfSecond;
 
             yield return m_GraphicsInterface.HideEnumerator<EnemyPokemonPanel>();
 
@@ -70,7 +69,7 @@ namespace Iris
             {
                 player.experience = Mathf.FloorToInt(Mathf.Min(totalExp, Mathf.Pow(player.level + 1, 3)));
 
-                yield return m_GraphicsInterface.SetPlayerStatsPanelExperienceSlider(player);
+                yield return m_GraphicsInterface.SetPlayerStatsPanelExperienceSlider();
 
                 if (player.experience >= Mathf.Pow(player.level + 1, 3))
                 {
