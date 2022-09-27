@@ -46,7 +46,7 @@ namespace Iris
         {
             m_Coordinator.GetEnemyActivePokemon(out var combatant);
 
-            string message = string.Concat($"Wild {combatant.name.ToUpper()} fainted!");
+            string message = string.Concat($"Wild {combatant.name} fainted!");
 
             yield return m_GraphicsInterface.TypeTextCharByChar(message);
         }
@@ -59,7 +59,7 @@ namespace Iris
             // (base exp gain * level / 7 * 1 / number of participants * 1 * (wild 1 or trainer 1.5) * (traded ? 1 or 1.5)
             int exp = Mathf.FloorToInt(enemy.asset.experience * enemy.level / 7f * 1f / 1f * 1f * 1f * 1f);
 
-            string message = string.Concat($"{player.name.ToUpper()} gained {exp} EXP. Points!");
+            string message = string.Concat($"{player.name} gained {exp} EXP. Points!");
 
             yield return m_GraphicsInterface.TypeTextCharByChar(message);
 

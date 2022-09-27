@@ -41,7 +41,7 @@ namespace Iris
         {
             m_Pokemon = props.pokemon;
 
-            m_Settings.name.text = m_Pokemon.name.ToUpper();
+            m_Settings.name.text = m_Pokemon.name;
 
             float level = m_Pokemon.level;
             m_Settings.level.text = string.Concat($"Lv{level}");

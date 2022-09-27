@@ -7,7 +7,8 @@ namespace Golem
 {
     public abstract class RuntimeSet<T> : ScriptableObject, IEnumerable<T>
     {
-        protected readonly List<T> m_Collection = new List<T>();
+        [SerializeField]
+        protected List<T> m_Collection = new List<T>();
 
         public T this[int index]
         {

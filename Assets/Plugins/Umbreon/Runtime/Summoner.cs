@@ -4,23 +4,15 @@ namespace Umbreon
 {
     public abstract class Summoner : MonoBehaviour
     {
-        [SerializeField]
-        protected ScriptablePokemon m_Asset;
-
-        [SerializeField]
-        protected Combatant m_Combatant;
-
-        private void Awake()
+        protected virtual void Awake()
         {
-            CreateStartupPokemon();
+            CreateStartupPokemonParty();
         }
 
-        protected virtual void CreateStartupPokemon()
-        {
-            var pokemon = new Pokemon(m_Asset);
+        protected abstract void CreateStartupPokemonParty();
 
-            m_Combatant.affinity = Affinity.Hostile;
-            m_Combatant.pokemon = pokemon;
-        }
+        public abstract Pokemon GetActivePokemonPartyMember();
+
+        public abstract Pokemon GetFirstPokemonThatIsNotFainted();
     }
 }

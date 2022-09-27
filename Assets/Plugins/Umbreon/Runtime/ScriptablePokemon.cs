@@ -4,9 +4,12 @@ using UnityEngine;
 
 namespace Umbreon
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(menuName = "ScriptableObject/Pokemon/Asset", fileName = "")]
     public sealed class ScriptablePokemon : ScriptableObject
     {
+        [SerializeField]
+        internal new string name;
+
         [SerializeField]
         private Sprite m_SpriteFront;
 

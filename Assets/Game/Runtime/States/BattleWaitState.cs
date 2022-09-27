@@ -37,7 +37,7 @@ namespace Iris
         {
             m_Coordinator.GetPlayerActivePokemon(out var combatant);
 
-            string message = string.Concat($"What will {combatant.name.ToUpper()} do?");
+            string message = string.Concat($"What will {combatant.name} do?");
 
             m_GraphicsInterface.PrintCompletedText(message);
             m_GraphicsInterface.Show<MovesMenu>();

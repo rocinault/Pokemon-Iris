@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1eca92aacde475680908cc8c51d9dc, type: 3}
   m_Name: bulbasaur
   m_EditorClassIdentifier: 
+  name: BULBASAUR
   m_SpriteFront: {fileID: -878961486, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_SpriteBack: {fileID: -1462036294, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_Health: 401

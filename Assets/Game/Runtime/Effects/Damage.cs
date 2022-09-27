@@ -3,13 +3,12 @@ using System.Collections;
 
 using UnityEngine;
 
-using Golem;
 using Slowbro;
 using Umbreon;
 
 namespace Iris
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "ScriptableObjects/Effects/Damage", menuName = "Damage")]
     internal sealed class Damage : ScriptableEffect
     {
         public override EffectSpec CreateEffectSpec(ScriptableAbility asset)

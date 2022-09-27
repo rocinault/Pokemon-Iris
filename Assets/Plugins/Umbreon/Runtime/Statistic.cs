@@ -7,7 +7,9 @@ namespace Umbreon
         Health,
         Attack,
         Defence,
-        Speed
+        Speed,
+        Accuracy,
+        Evasion
     }
 
     public class Statistic

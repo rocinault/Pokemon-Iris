@@ -35,7 +35,7 @@ namespace Umbreon
 
             if (!result.success)
             {
-                result.message += string.Concat($"{instigator.name.ToUpper()}'s attack missed!\n");
+                result.message += string.Concat($"{instigator.name}'s attack missed!\n");
             }
 
             return result.success;

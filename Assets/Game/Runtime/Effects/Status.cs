@@ -8,7 +8,7 @@ using Umbreon;
 
 namespace Iris
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "ScriptableObject/Effects/Status", menuName = "Status")]
     internal sealed class Status : ScriptableEffect
     {
         [SerializeField]
@@ -41,6 +41,10 @@ namespace Iris
                     return m_Defence;
                 case StatisticType.Speed:
                     return m_Speed;
+                case StatisticType.Accuracy:
+                    return m_Accuracy;
+                case StatisticType.Evasion:
+                    return m_Evasion;
                 default:
                     break;
             }
@@ -100,12 +104,12 @@ namespace Iris
                 {
                     if (stat.stage >= 6)
                     {
-                        result.message += string.Concat($"{combatant.name.ToUpper()} {statType} won't go higher!\n");
+                        result.message += string.Concat($"{combatant.name} {statType} won't go higher!\n");
                         result.success = false;
                     }
                     else if (stat.stage <= -6)
                     {
-                        result.message += string.Concat($"{combatant.name.ToUpper()} {statType} won't go lower!\n");
+                        result.message += string.Concat($"{combatant.name} {statType} won't go lower!\n");
                         result.success = false;
                     }
                 }
@@ -113,53 +117,52 @@ namespace Iris
                 return result.success;
             }
 
+            // consider using a list to sort them by priority; target debuff, target buff, self debuff, self buff.
             public override IEnumerator ApplyEffectSpec(Combatant instigator, Combatant target, SpecResult result)
             {
-                result.message = string.Empty;
+                var modifiers = asset.container.modifiers;
 
-                // consider using a list to sort them by priority; target debuff, target buff, self debuff, self buff.
-
-                foreach (var modifier in GetAllTargetDebuffModifiers())
+                foreach (var modifier in GetAllTargetDebuffModifiers(modifiers))
                 {
                     ApplyStageModifiersToCombatant(target, modifier.stat, modifier.multiplier, ref result);
 
                     yield return target.image.material.Overlay(m_Status.GetTextureForStatistic(modifier.stat), 0.75f, -1f, 1f, EasingType.PingPong);
                 }
 
-                yield return TypeStatusCharByCharWithOneSecondDelay(target, result);
+                yield return TypeStatusCharByCharWithOneSecondDelay(result);
 
                 result.message = string.Empty;
 
-                foreach (var modifier in GetAllTargetBuffModifiers())
+                foreach (var modifier in GetAllTargetBuffModifiers(modifiers))
                 {
                     ApplyStageModifiersToCombatant(target, modifier.stat, modifier.multiplier, ref result);
 
                     yield return target.image.material.Overlay(m_Status.GetTextureForStatistic(modifier.stat), 0.75f, 1f, 1f, EasingType.PingPong);
                 }
 
-                yield return TypeStatusCharByCharWithOneSecondDelay(target, result);
+                yield return TypeStatusCharByCharWithOneSecondDelay(result);
 
                 result.message = string.Empty;
 
-                foreach (var modifier in GetAllSelfTargetDebuffModifiers())
+                foreach (var modifier in GetAllSelfTargetDebuffModifiers(modifiers))
                 {
                     ApplyStageModifiersToCombatant(instigator, modifier.stat, modifier.multiplier, ref result);
 
                     yield return instigator.image.material.Overlay(m_Status.GetTextureForStatistic(modifier.stat), 0.75f, -1f, 1f, EasingType.PingPong);
                 }
 
-                yield return TypeStatusCharByCharWithOneSecondDelay(instigator, result);
+                yield return TypeStatusCharByCharWithOneSecondDelay(result);
 
                 result.message = string.Empty;
 
-                foreach (var modifier in GetAllSelfTargetBuffModifiers())
+                foreach (var modifier in GetAllSelfTargetBuffModifiers(modifiers))
                 {
                     ApplyStageModifiersToCombatant(instigator, modifier.stat, modifier.multiplier, ref result);
 
                     yield return instigator.image.material.Overlay(m_Status.GetTextureForStatistic(modifier.stat), 0.75f, 1f, 1f, EasingType.PingPong);
                 }
 
-                yield return TypeStatusCharByCharWithOneSecondDelay(instigator, result);
+                yield return TypeStatusCharByCharWithOneSecondDelay(result);
 
                 result.message = string.Empty;
             }
@@ -174,16 +177,16 @@ namespace Iris
 
                     if (multiplier < 0)
                     {
-                        result.message += string.Concat($"{pokemon.name.ToUpper()}'s {statType} fell!\n");
+                        result.message += string.Concat($"{pokemon.name}'s {statType} fell!\n");
                     }
                     else if (multiplier > 0)
                     {
-                        result.message += string.Concat($"{pokemon.name.ToUpper()}'s {statType} rose!\n");
+                        result.message += string.Concat($"{pokemon.name}'s {statType} rose!\n");
                     }
                 }
             }
 
-            private IEnumerator TypeStatusCharByCharWithOneSecondDelay(Combatant combatant, SpecResult result)
+            private IEnumerator TypeStatusCharByCharWithOneSecondDelay(SpecResult result)
             {
                 var graphicsInterface = FindObjectOfType<BattleGraphicsInterface>();
 
@@ -196,125 +199,25 @@ namespace Iris
                 }
             }
 
-            private EffectModifiers[] GetAllTargetDebuffModifiers()
+            private static EffectModifiers[] GetAllTargetDebuffModifiers(EffectModifiers[] modifiers)
             {
-                return Array.FindAll(asset.container.modifiers, (x) => x.target == EffectModifierType.Target && x.multiplier < 0);
+                return Array.FindAll(modifiers, (x) => x.target == EffectModifierType.Target && x.multiplier < 0);
             }
 
-            private EffectModifiers[] GetAllTargetBuffModifiers()
+            private static EffectModifiers[] GetAllTargetBuffModifiers(EffectModifiers[] modifiers)
             {
-                return Array.FindAll(asset.container.modifiers, (x) => x.target == EffectModifierType.Target && x.multiplier > 0);
+                return Array.FindAll(modifiers, (x) => x.target == EffectModifierType.Target && x.multiplier > 0);
             }
 
-            private EffectModifiers[] GetAllSelfTargetDebuffModifiers()
+            private static EffectModifiers[] GetAllSelfTargetDebuffModifiers(EffectModifiers[] modifiers)
             {
-                return Array.FindAll(asset.container.modifiers, (x) => x.target == EffectModifierType.Self && x.multiplier < 0);
+                return Array.FindAll(modifiers, (x) => x.target == EffectModifierType.Self && x.multiplier < 0);
             }
 
-            private EffectModifiers[] GetAllSelfTargetBuffModifiers()
+            private static EffectModifiers[] GetAllSelfTargetBuffModifiers(EffectModifiers[] modifiers)
             {
-                return Array.FindAll(asset.container.modifiers, (x) => x.target == EffectModifierType.Self && x.multiplier > 0);
+                return Array.FindAll(modifiers, (x) => x.target == EffectModifierType.Self && x.multiplier > 0);
             }
         }
     }
 }
-
-
-/*
-
-                switch (target.affinity)
-                {
-                    case Affinity.Friendly:
-                        yield return new Parallel(graphicsInterface, graphicsInterface.SetPlayerStatsPanelHealthSlider(),
-                            graphicsInterface.ShakePlayerStatsPanel());
-                        break;
-                    case Affinity.Hostile:
-                        yield return new Parallel(graphicsInterface, graphicsInterface.SetEnemyStatsPanelHealthSlider(),
-                            graphicsInterface.ShakeEnemyStatsPanel());
-                        break;
-                }
-
-private IEnumerator OnStatusEffectSpec(SpecResult result)
-        {
-            var modifiers = m_AbilitySpec.asset.container.modifiers;
-
-            for (int i = 0; i < modifiers.Length; i++)
-            {
-                switch (modifiers[i].target)
-                {
-                    case EffectModifierType.Target:
-                        {
-                            switch (target.affinity)
-                            {
-                                case Affinity.Friendly:
-                                    {
-                                        yield return new Parallel(graphicsInterface, graphicsInterface.Get<PlayerPokemonPanel>().FlashPokemonImageOnDamage(),
-                                            graphicsInterface.Get<PlayerStatsPanel>().ShakeStatsPanelAndSetHealthBarValue(instigator.pokemon));
-
-                                        string message = result.message.Split('\n', StringSplitOptions.RemoveEmptyEntries)[i];
-                                        yield return graphicsInterface.TypeTextCharByChar(message);
-                                        yield return m_DelayForOneSecond;
-                                        break;
-                                    }
-                                case Affinity.Hostile:
-                                    {
-                                        yield return new Parallel(graphicsInterface, graphicsInterface.Get<EnemyPokemonPanel>().FlashPokemonImageOnDamage(),
-                                            graphicsInterface.Get<EnemyStatsPanel>().ShakeStatsPanelAndSetHealthBarValue(target.pokemon));
-
-                                        string message = result.message.Split('\n', StringSplitOptions.RemoveEmptyEntries)[i];
-                                        yield return graphicsInterface.TypeTextCharByChar(message);
-                                        yield return m_DelayForOneSecond;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                    case EffectModifierType.Self:
-                        {
-                            switch (instigator.affinity)
-                            {
-                                case Affinity.Friendly:
-                                    {
-                                        yield return new Parallel(graphicsInterface, graphicsInterface.Get<PlayerPokemonPanel>().FlashPokemonImageOnDamage(),
-                                            graphicsInterface.Get<PlayerStatsPanel>().ShakeStatsPanelAndSetHealthBarValue(instigator.pokemon));
-
-                                        string message = result.message.Split('\n', StringSplitOptions.RemoveEmptyEntries)[i];
-                                        yield return graphicsInterface.TypeTextCharByChar(message);
-                                        yield return m_DelayForOneSecond;
-                                        break;
-                                    }
-                                case Affinity.Hostile:
-                                    {
-                                        yield return new Parallel(graphicsInterface, graphicsInterface.Get<EnemyPokemonPanel>().FlashPokemonImageOnDamage(),
-                                            graphicsInterface.Get<EnemyStatsPanel>().ShakeStatsPanelAndSetHealthBarValue(target.pokemon));
-
-                                        string message = result.message.Split('\n', StringSplitOptions.RemoveEmptyEntries)[i];
-                                        yield return graphicsInterface.TypeTextCharByChar(message);
-                                        yield return m_DelayForOneSecond;
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
-                }
-            }
-        }
-
-
-                foreach (var modifier in asset.container.modifiers)
-                {
-                    switch (modifier.target)
-                    {
-                        case EffectModifierType.Self:
-                            ApplyStageModifiersToCombatant(instigator, modifier.stat, modifier.multiplier, ref result);
-                            break;
-                        case EffectModifierType.Target:
-                            ApplyStageModifiersToCombatant(target, modifier.stat, modifier.multiplier, ref result);
-                            break;
-                    }
-                }
-
-
-
-
- */ 

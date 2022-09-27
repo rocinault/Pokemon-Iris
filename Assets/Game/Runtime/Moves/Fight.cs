@@ -37,29 +37,15 @@ namespace Iris
             {
                 yield return m_AbilitySpec.ActivateAbility(instigator, target);
 
-                // Get a list of the effects, then sort it, run the correct routine based on the type.
-
                 yield return m_DelayForHalfSecond;
+
+                result.message = string.Empty;
 
                 yield return m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator, target, result);
 
-                // Consider moving this to the actual classes then all of this checking bs can be avoided.
-                //if (m_AbilitySpec.asset.effect.GetType() == typeof(Damage))
-                //{
-                //    result.message = string.Empty;
+                yield return m_DelayForHalfSecond;
 
-                //    m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
-
-                //    yield return OnDamageEffectSpec(result);
-                //}
-                //else if (m_AbilitySpec.asset.effect.GetType() == typeof(Status))
-                //{
-                //    result.message = string.Empty;
-
-                //    m_AbilitySpec.effectSpec.ApplyEffectSpec(instigator.pokemon, target.pokemon, ref result);
-
-                //    yield return OnStatusEffectSpec(result);
-                //}
+                result.message = string.Empty;
             }
 
             graphicsInterface.CleanupTextProcessorAndClearText();

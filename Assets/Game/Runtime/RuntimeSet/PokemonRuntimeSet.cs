@@ -5,7 +5,7 @@ using Umbreon;
 
 namespace Iris
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "ScriptableObject/RuntimeSet/Pokemon", menuName = "PokemonRuntimeSet")]
     internal sealed class PokemonRuntimeSet : RuntimeSet<Pokemon>
     {
         private const int kMaxNumberOfPartyMembers = 6;
@@ -14,8 +14,6 @@ namespace Iris
         {
             if (m_Collection.Count < kMaxNumberOfPartyMembers)
             {
-                //Debug.Log($"Added {item.name} to {name}");
-
                 base.Add(item);
             }
         }

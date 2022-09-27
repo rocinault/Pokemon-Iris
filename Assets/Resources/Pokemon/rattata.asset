@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1eca92aacde475680908cc8c51d9dc, type: 3}
   m_Name: rattata
   m_EditorClassIdentifier: 
+  name: RATTATA
   m_SpriteFront: {fileID: 32781363, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_SpriteBack: {fileID: -1519500521, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_Health: 795

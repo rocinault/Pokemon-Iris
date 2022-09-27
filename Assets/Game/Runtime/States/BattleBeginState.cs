@@ -28,6 +28,9 @@ namespace Iris
             m_GraphicsInterface.HideAll();
             m_GraphicsInterface.CleanupTextProcessorAndClearText();
 
+            m_Coordinator.SetEnemyActivePokemon();
+            m_Coordinator.SetPlayerActivePokemon();
+
             m_Coordinator.SetEnemyStatPanelProperties();
             m_Coordinator.SetPlayerStatPanelAndAbilityMenuProperties();
 
@@ -63,7 +66,7 @@ namespace Iris
         {
             m_Coordinator.GetEnemyActivePokemon(out var combatant);
 
-            string message = string.Concat($"A wild {combatant.name.ToUpper()} appeared!");
+            string message = string.Concat($"A wild {combatant.name} appeared!");
 
             yield return m_GraphicsInterface.TypeTextCharByChar(message);
         }
@@ -72,7 +75,7 @@ namespace Iris
         {
             m_Coordinator.GetPlayerActivePokemon(out var combatant);
 
-            string message = string.Concat($"Go! {combatant.name.ToUpper()}!");
+            string message = string.Concat($"Go! {combatant.name}!");
 
             yield return m_GraphicsInterface.TypeTextCharByChar(message);
         }

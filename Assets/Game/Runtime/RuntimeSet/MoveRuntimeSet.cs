@@ -5,7 +5,7 @@ using Umbreon;
 
 namespace Iris
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "ScriptableObject/RuntimeSet/Move", menuName = "MoveRuntimeSet")]
     internal sealed class MoveRuntimeSet : RuntimeSet<Move>
     {
         internal void Sort()

@@ -25,12 +25,12 @@ namespace Umbreon
 
         private const uint kMaxNumberOfAbilities = 4;
 
-        public Pokemon(ScriptablePokemon asset)
+        public Pokemon(ScriptablePokemon asset, string name = null, uint level = 0)
         {
             this.asset = asset;
 
-            name = asset.name;
-            level = asset.level;
+            this.name = name ?? asset.name;
+            this.level = level > 0 ? level : asset.level;
 
             experience = Mathf.FloorToInt(Mathf.Pow(level, 3f));
 
@@ -86,7 +86,7 @@ namespace Umbreon
         {
             level++;
 
-            health.value = Mathf.Round(CalculateHealthStatValue(asset.health) * (health.value / health.maxValue));
+            health.value = Mathf.Floor(CalculateHealthStatValue(asset.health) * (health.value / health.maxValue));
             health.maxValue = CalculateHealthStatValue(asset.health);
 
             attack.value = attack.maxValue = CalculateStatValue(asset.attack, attack);

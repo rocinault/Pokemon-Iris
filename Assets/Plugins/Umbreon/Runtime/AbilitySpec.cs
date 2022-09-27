@@ -18,7 +18,7 @@ namespace Umbreon
 
             if (CanActivateAbility(ref result))
             {
-                result.message = string.Concat($"{instigator.pokemon.name.ToUpper()} used {asset.abilityName}!\n");
+                result.message = string.Concat($"{instigator.pokemon.name} used {asset.abilityName}!\n");
             }
         }
 

@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 using Umbreon;
@@ -7,31 +9,43 @@ namespace Iris
     internal class Trainer : Summoner
     {
         [SerializeField]
+        private TrainerRuntimeSet m_TrainerSet;
+
+        [SerializeField]
         private PokemonRuntimeSet m_PokemonRuntimeSet;
 
-        protected override void CreateStartupPokemon()
+        protected override void CreateStartupPokemonParty()
         {
-            var pokemon = new Pokemon(m_Asset);
+            int count = m_TrainerSet.Count();
 
-            m_Combatant.affinity = Affinity.Friendly;
-            m_Combatant.pokemon = pokemon;
-
-            m_PokemonRuntimeSet.Add(pokemon);
+            for (int i = 0; i < count; i++)
+            {
+                m_PokemonRuntimeSet.Add(TrainerRuntimeSet.CreatePokemonFromSet(m_TrainerSet[i]));
+            }
         }
 
-        internal Pokemon GetFirstPokemonThatIsNotFainted()
+        public override Pokemon GetActivePokemonPartyMember()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Pokemon GetFirstPokemonThatIsNotFainted()
         {
             for (int i = 0; i < m_PokemonRuntimeSet.Count(); i++)
             {
                 var pokemon = m_PokemonRuntimeSet[i];
 
-                if (pokemon != null && pokemon.health.value > 0)
+                if (pokemon != null && !pokemon.isFainted)
                 {
                     return pokemon;
                 }
             }
 
-            throw new System.Exception("No non-fainted pokemon found!");
+            #region Debug
+#if UNITY_EDITOR
+            throw new ArgumentOutOfRangeException("No non-fainted pokemon found!");
+#endif
+            #endregion
         }
     }
 }

@@ -5,7 +5,7 @@ using Umbreon;
 
 namespace Iris
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "ScriptableObject/Abilities/Growl", menuName = "Growl")]
     internal sealed class Growl : ScriptableAbility
     {
         [SerializeField]

@@ -67,9 +67,21 @@ namespace Iris
             s_StateMachine.ChangeState(stateToTransitionInto);
         }
 
+        internal void SetPlayerActivePokemon()
+        {
+            m_PlayerCombatant.affinity = Affinity.Friendly;
+            m_PlayerCombatant.pokemon = m_Player.GetFirstPokemonThatIsNotFainted();
+        }
+
         internal void GetPlayerActivePokemon(out Pokemon pokemon)
         {
             pokemon = m_PlayerCombatant.pokemon;
+        }
+
+        internal void SetEnemyActivePokemon()
+        {
+            m_EnemyCombatant.affinity = Affinity.Hostile;
+            m_EnemyCombatant.pokemon = m_Enemy.GetFirstPokemonThatIsNotFainted();
         }
 
         internal void GetEnemyActivePokemon(out Pokemon pokemon)

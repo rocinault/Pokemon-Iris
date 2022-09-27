@@ -43,10 +43,13 @@ namespace Golem
 
         public void AddStatesToStateMachine(IState<T>[] states)
         {
+            #region Debug
 #if UNITY_EDITOR
             VerifyTIsEnum();
             VerifyStatesRepresentAllEntriesOfT(states);
 #endif
+            #endregion
+
             foreach (var state in states)
             {
                 m_States.Add(state.uniqueID, state);
