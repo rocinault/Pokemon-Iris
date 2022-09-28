@@ -32,10 +32,10 @@ namespace Iris
         {
             yield return m_DelayForHalfSecond;
 
-            yield return m_GraphicsInterface.HideEnumerator<EnemyPokemonPanel>();
+            yield return m_GraphicsInterface.HideAsync<EnemyPokemonPanel>();
 
             yield return new Parallel(m_Coordinator, TypeDefeatedPokemonNameCharByChar(),
-                m_GraphicsInterface.HideEnumerator<EnemyStatsPanel>());
+                m_GraphicsInterface.HideAsync<EnemyStatsPanel>());
 
             yield return m_DelayForHalfSecond;
 

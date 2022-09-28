@@ -28,10 +28,10 @@ namespace Voltorb
 
         public void Show<T>(string name = null) where T : Graphic
         {
-            StartCoroutine(ShowEnumerator<T>(name));
+            StartCoroutine(ShowAsync<T>(name));
         }
 
-        public IEnumerator ShowEnumerator<T>(string name = null) where T : Graphic
+        public IEnumerator ShowAsync<T>(string name = null) where T : Graphic
         {
             var key = name ?? typeof(T).Name;
 
@@ -55,10 +55,10 @@ namespace Voltorb
 
         public void Hide<T>(string name = null) where T : Graphic
         {
-            StartCoroutine(HideEnumerator<T>(name));
+            StartCoroutine(HideAsync<T>(name));
         }
 
-        public IEnumerator HideEnumerator<T>(string name = null) where T : Graphic
+        public IEnumerator HideAsync<T>(string name = null) where T : Graphic
         {
             var key = name ?? typeof(T).Name;
 

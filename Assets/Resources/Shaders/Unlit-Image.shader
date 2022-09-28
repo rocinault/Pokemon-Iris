@@ -80,8 +80,10 @@ Shader "Unlit/Image"
 
             sampler2D _MainTex;
             sampler2D _OverlayTex;
+
             fixed4 _Color;
             fixed4 _TextureSampleAdd;
+
             float4 _ClipRect;
             float4 _MainTex_ST;
             float4 _OverlayTex_ST;

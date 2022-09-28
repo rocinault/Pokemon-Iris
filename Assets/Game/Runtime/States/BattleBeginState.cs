@@ -40,22 +40,22 @@ namespace Iris
         private IEnumerator WildPokemonBattleStartSequence()
         {
             yield return new Parallel(m_Coordinator,
-                m_GraphicsInterface.ShowEnumerator<PlayerPanel>(),
-                m_GraphicsInterface.ShowEnumerator<PlayerTrainerPanel>(),
-                m_GraphicsInterface.ShowEnumerator<EnemyPanel>(),
-                m_GraphicsInterface.ShowEnumerator<EnemyPokemonPanel>());
+                m_GraphicsInterface.ShowAsync<PlayerPanel>(),
+                m_GraphicsInterface.ShowAsync<PlayerTrainerPanel>(),
+                m_GraphicsInterface.ShowAsync<EnemyPanel>(),
+                m_GraphicsInterface.ShowAsync<EnemyPokemonPanel>());
 
             yield return new Parallel(m_Coordinator, PrintEncounterNameCharByChar(),
-                m_GraphicsInterface.ShowEnumerator<EnemyStatsPanel>());
+                m_GraphicsInterface.ShowAsync<EnemyStatsPanel>());
 
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
             yield return new Parallel(m_Coordinator, PrintSummonNameCharByChar(),
-                m_GraphicsInterface.HideEnumerator<PlayerTrainerPanel>());
+                m_GraphicsInterface.HideAsync<PlayerTrainerPanel>());
 
             yield return new Parallel(m_Coordinator,
-                m_GraphicsInterface.ShowEnumerator<PlayerPokemonPanel>(),
-                m_GraphicsInterface.ShowEnumerator<PlayerStatsPanel>());
+                m_GraphicsInterface.ShowAsync<PlayerPokemonPanel>(),
+                m_GraphicsInterface.ShowAsync<PlayerStatsPanel>());
 
             yield return m_DelayForHalfSecond;
 

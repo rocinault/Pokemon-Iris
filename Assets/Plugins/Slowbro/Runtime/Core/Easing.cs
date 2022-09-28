@@ -6,6 +6,7 @@ namespace Slowbro
     {
         linear,
         EaseOutSine,
+        EaseInSine,
         PingPong
     }
 
@@ -20,6 +21,9 @@ namespace Slowbro
 
                 case EasingType.EaseOutSine:
                     return EaseOutSine(time);
+
+                case EasingType.EaseInSine:
+                    return EaseInSine(time);
 
                 case EasingType.PingPong:
                     return PingPong(time);
@@ -39,6 +43,11 @@ namespace Slowbro
         private static float EaseOutSine(float time)
         {
             return Mathf.Sin(time * Mathf.PI / 2f);
+        }
+
+        private static float EaseInSine(float time)
+        {
+            return 1f - Mathf.Cos(time * Mathf.PI / 2f);
         }
 
         private static float PingPong(float time)

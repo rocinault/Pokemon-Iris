@@ -25,7 +25,7 @@ namespace Iris
 
         private IEnumerator WildPokemonBattleLostEndSequence()
         {
-            yield return m_GraphicsInterface.HideEnumerator<PlayerPokemonPanel>();
+            yield return m_GraphicsInterface.HideAsync<PlayerPokemonPanel>();
         }
     }
 }
