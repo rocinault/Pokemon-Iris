@@ -12,6 +12,8 @@ namespace Iris
     {
         private static readonly HashSet<string> s_LoadedScenes = new HashSet<string>();
 
+        private readonly WaitForEndOfFrame m_WaitForEndOfFrame = new WaitForEndOfFrame();
+
         internal IEnumerator LoadSceneAsync(string sceneName)
         {
             if (!s_LoadedScenes.Contains(sceneName))
@@ -19,6 +21,8 @@ namespace Iris
                 s_LoadedScenes.Add(sceneName);
 
                 yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+                yield return m_WaitForEndOfFrame;
             }
         }
 
@@ -29,6 +33,8 @@ namespace Iris
                 s_LoadedScenes.Remove(sceneName);
 
                 yield return SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+                yield return m_WaitForEndOfFrame;
             }
         }
     }

@@ -95,6 +95,20 @@ namespace Voltorb
             }
         }
 
+        public void SetActive<T>(bool value, string name = null) where T : Graphic
+        {
+            var key = name ?? typeof(T).Name;
+
+            if (m_SceneGraphicReferences.ContainsKey(key))
+            {
+                m_SceneGraphicReferences[key].gameObject.SetActive(value);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"key for type {key} was not registered");
+            }
+        }
+
         public T Get<T>(string name = null) where T : Graphic
         {
             var key = name ?? typeof(T).Name;

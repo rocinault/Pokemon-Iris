@@ -10,27 +10,34 @@ namespace Iris
 {
     internal sealed class BattleWaitState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        private readonly BattleGraphicsInterface m_GraphicsInterface;
-        private readonly BattleCoordinator m_Coordinator;
+        private readonly GameBattleStateBehaviour m_StateBehaviour;
 
-        private readonly IEnumerator m_Coroutine;
+        private BattleCoordinator m_Coordinator;
+        private BattleGraphicsInterface m_Interface;
 
-        public BattleWaitState(T uniqueID, BattleGraphicsInterface graphicsInterface, BattleCoordinator coordinator) : base(uniqueID)
+        private IEnumerator m_BouncePokemonAndStatsPanelAsync;
+
+        public BattleWaitState(T uniqueID, GameBattleStateBehaviour stateBehaviour) : base(uniqueID)
         {
-            m_GraphicsInterface = graphicsInterface;
-            m_Coordinator = coordinator;
+            m_StateBehaviour = stateBehaviour;
 
-            m_Coroutine = BouncePokemonAndStatsPanelWhileWaiting();
+            m_BouncePokemonAndStatsPanelAsync = BouncePokemonAndStatsPanelWhileWaiting();
         }
 
         public override void Enter()
         {
+            m_Coordinator = m_StateBehaviour.GetBattleCoordinator();
+            m_Interface = m_StateBehaviour.GetBattleGraphicsInterface();
+
+            m_Interface.SetActive<PlayerTrainerPanel>(false);
+            m_Interface.SetActive<PlayerPokemonPanel>(true);
+
             EventSystem.instance.AddListener<MoveButtonClickedEventArgs>(OnMoveButtonClicked);
             EventSystem.instance.AddListener<AbilityButtonClickedEventArgs>(OnAbilityButtonClicked);
 
             PrintPokemonNameAndShowMovesMenu();
 
-            m_Coordinator.StartCoroutine(m_Coroutine);
+            m_StateBehaviour.StartCoroutine(m_BouncePokemonAndStatsPanelAsync);
         }
 
         private void PrintPokemonNameAndShowMovesMenu()
@@ -39,15 +46,15 @@ namespace Iris
 
             string message = string.Concat($"What will {combatant.name} do?");
 
-            m_GraphicsInterface.PrintCompletedText(message);
-            m_GraphicsInterface.Show<MovesMenu>();
+            m_Interface.PrintCompletedText(message);
+            m_Interface.Show<MovesMenu>();
         }
 
         private IEnumerator BouncePokemonAndStatsPanelWhileWaiting()
         {
             while (true)
             {
-                yield return m_GraphicsInterface.BouncePokemonAndStatsPanelWhileWaiting();
+                yield return m_Interface.BouncePokemonAndStatsPanelWhileWaiting();
             }
         }
 
@@ -60,6 +67,9 @@ namespace Iris
                 case MoveSelection.Fight:
                     HideMovesMenuAndShowAbilitiesMenu();
                     break;
+                case MoveSelection.Pokemon:
+                    TransitionIntoMenuGameMode();
+                    break;
                 default:
                     break;
             }
@@ -67,19 +77,26 @@ namespace Iris
 
         private void HideMovesMenuAndShowAbilitiesMenu()
         {
-            m_GraphicsInterface.Hide<MovesMenu>();
-            m_GraphicsInterface.Show<AbilitiesMenu>();
+            m_Interface.Hide<MovesMenu>();
+            m_Interface.Show<AbilitiesMenu>();
+        }
+
+        private void TransitionIntoMenuGameMode()
+        {
+            Exit();
+
+            GameCoordinator.instance.EnterGameMode(GameCoordinator.instance.menuState);
         }
 
         private void OnAbilityButtonClicked(AbilityButtonClickedEventArgs args)
         {
-            m_Coordinator.AddFightMoveToRuntimeSet(args.abilitySpec);
-            m_Coordinator.ChangeState(BattleState.Action);
+            m_StateBehaviour.AddFightMoveToRuntimeSet(args.abilitySpec);
+            m_StateBehaviour.ChangeState(BattleState.Action);
         }
 
         public override void Exit()
         {
-            m_Coordinator.StopCoroutine(m_Coroutine);
+            m_StateBehaviour.StopCoroutine(m_BouncePokemonAndStatsPanelAsync);
 
             ClearTextAndHideAbilitiesMenu();
 
@@ -89,8 +106,8 @@ namespace Iris
 
         private void ClearTextAndHideAbilitiesMenu()
         {
-            m_GraphicsInterface.CleanupTextProcessorAndClearText();
-            m_GraphicsInterface.Hide<AbilitiesMenu>();
+            m_Interface.CleanupTextProcessorAndClearText();
+            m_Interface.Hide<AbilitiesMenu>();
         }
     }
 }

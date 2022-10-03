@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,10 +9,15 @@ namespace Iris
 {
     internal sealed class GameCoordinator : Singleton<GameCoordinator>
     {
-        private static readonly Stack<IState<GameMode>> s_States = new Stack<IState<GameMode>>();
+        internal GameOverworldStateBehaviour overworldState => m_OverworldState;
+        internal GameBattleStateBehaviour battleState => m_BattleState;
+        internal GameMenuStateBehaviour menuState => m_MenuState;
 
-        private static GameOverworldState<GameMode> s_OverworldState;
-        private static GameBattleState<GameMode> s_BattleState;
+        private GameOverworldStateBehaviour m_OverworldState;
+        private GameBattleStateBehaviour m_BattleState;
+        private GameMenuStateBehaviour m_MenuState;
+
+        private static readonly Stack<IState<GameMode>> s_States = new Stack<IState<GameMode>>();
 
         private static bool s_IsTransitioning = false;
 
@@ -21,31 +25,19 @@ namespace Iris
         {
             base.Awake();
 
-            CreateStartupGameModeStates();
+            GetStartupGameModeStates();
         }
 
-        private void CreateStartupGameModeStates()
+        private void GetStartupGameModeStates()
         {
-            s_OverworldState = new GameOverworldState<GameMode>(GameMode.Overworld, instance);
-            s_BattleState = new GameBattleState<GameMode>(GameMode.Battle, instance);
+            m_OverworldState = GetComponent<GameOverworldStateBehaviour>();
+            m_BattleState = GetComponent<GameBattleStateBehaviour>();
+            m_MenuState = GetComponent<GameMenuStateBehaviour>();
         }
 
         private void Start()
         {
-            StartOverworldGameMode();
-        }
-
-        private void StartOverworldGameMode()
-        {
-            EnterGameMode(s_OverworldState);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                EnterGameMode(s_BattleState);
-            }
+            EnterGameMode(m_OverworldState);
         }
 
         internal void EnterGameMode(IState<GameMode> stateToTransitionInto)
@@ -93,26 +85,6 @@ namespace Iris
             yield return CameraFade.FadeOut();
 
             s_IsTransitioning = false;
-        }
-    }
-
-    internal sealed class GameOverworldState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
-    {
-        private readonly GameCoordinator m_Coordinator;
-
-        public GameOverworldState(T uniqueID, GameCoordinator coordinator) : base(uniqueID)
-        {
-            m_Coordinator = coordinator;
-        }
-    }
-
-    internal sealed class GameBattleState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
-    {
-        private readonly GameCoordinator m_Coordinator;
-
-        public GameBattleState(T uniqueID, GameCoordinator coordinator) : base(uniqueID)
-        {
-            m_Coordinator = coordinator;
         }
     }
 }

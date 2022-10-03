@@ -10,27 +10,29 @@ namespace Iris
 {
     internal sealed class BattleActionState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        private readonly BattleGraphicsInterface m_GraphicsInterface;
-        private readonly BattleCoordinator m_Coordinator;
+        private readonly GameBattleStateBehaviour m_StateBehaviour;
 
-        public BattleActionState(T uniqueID, BattleGraphicsInterface graphicsInterface, BattleCoordinator coordinator) : base(uniqueID)
+        private BattleGraphicsInterface m_Interface;
+
+        public BattleActionState(T uniqueID, GameBattleStateBehaviour stateBehaviour) : base(uniqueID)
         {
-            m_GraphicsInterface = graphicsInterface;
-            m_Coordinator = coordinator;
+            m_StateBehaviour = stateBehaviour;
         }
 
         public override void Enter()
         {
-            var moveRuntimeSet = m_Coordinator.GetMoveRuntimeSet();
+            m_Interface = m_StateBehaviour.GetBattleGraphicsInterface();
+
+            var moveRuntimeSet = m_StateBehaviour.GetMoveRuntimeSet();
             moveRuntimeSet.Sort();
 
-            m_GraphicsInterface.CleanupTextProcessorAndClearText();
-            m_Coordinator.StartCoroutine(RunAllSelectedActionsInPriority());
+            m_Interface.CleanupTextProcessorAndClearText();
+            m_StateBehaviour.StartCoroutine(RunAllSelectedActionsInPriority());
         }
 
         private IEnumerator RunAllSelectedActionsInPriority()
         {
-            var moveRuntimeSet = m_Coordinator.GetMoveRuntimeSet();
+            var moveRuntimeSet = m_StateBehaviour.GetMoveRuntimeSet();
 
             for (int i = 0; i < moveRuntimeSet.Count(); i++)
             {
@@ -43,25 +45,25 @@ namespace Iris
                     switch (target.affinity)
                     {
                         case Affinity.Hostile:
-                            m_Coordinator.ChangeState(BattleState.Won);
+                            m_StateBehaviour.ChangeState(BattleState.Won);
                             yield break;
                         case Affinity.Friendly:
-                            m_Coordinator.ChangeState(BattleState.Lost);
+                            m_StateBehaviour.ChangeState(BattleState.Lost);
                             yield break;
                     }
                 }
             }
 
-            m_Coordinator.ChangeState(BattleState.Wait);
+            m_StateBehaviour.ChangeState(BattleState.Wait);
         }
 
         public override void Exit()
         {
-            var moveRuntimeSet = m_Coordinator.GetMoveRuntimeSet();
+            var moveRuntimeSet = m_StateBehaviour.GetMoveRuntimeSet();
             moveRuntimeSet.Clear();
 
-            m_Coordinator.StopCoroutine(RunAllSelectedActionsInPriority());
-            m_GraphicsInterface.CleanupTextProcessorAndClearText();
+            m_StateBehaviour.StopCoroutine(RunAllSelectedActionsInPriority());
+            m_Interface.CleanupTextProcessorAndClearText();
         }
     }
 }

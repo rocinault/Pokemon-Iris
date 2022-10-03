@@ -10,32 +10,36 @@ namespace Iris
 {
     internal sealed class BattleWonState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        private readonly BattleGraphicsInterface m_GraphicsInterface;
-        private readonly BattleCoordinator m_Coordinator;
+        private readonly GameBattleStateBehaviour m_StateBehaviour;
+
+        private BattleGraphicsInterface m_Interface;
+        private BattleCoordinator m_Coordinator;
 
         private readonly WaitForSeconds m_DelayForHalfSecond = new WaitForSeconds(kDelayForHalfSecond);
 
         private const float kDelayForHalfSecond = 0.5f;
 
-        public BattleWonState(T uniqueID, BattleGraphicsInterface graphicsInterface, BattleCoordinator coordinator) : base(uniqueID)
+        public BattleWonState(T uniqueID, GameBattleStateBehaviour stateBehaviour) : base(uniqueID)
         {
-            m_GraphicsInterface = graphicsInterface;
-            m_Coordinator = coordinator;
+            m_StateBehaviour = stateBehaviour;
         }
 
         public override void Enter()
         {
-            m_Coordinator.StartCoroutine(WildPokemonBattleWonEndSequence());
+            m_Coordinator = m_StateBehaviour.GetBattleCoordinator();
+            m_Interface = m_StateBehaviour.GetBattleGraphicsInterface();
+
+            m_StateBehaviour.StartCoroutine(WildPokemonBattleWonEndSequence());
         }
 
         private IEnumerator WildPokemonBattleWonEndSequence()
         {
             yield return m_DelayForHalfSecond;
 
-            yield return m_GraphicsInterface.HideAsync<EnemyPokemonPanel>();
+            yield return m_Interface.HideAsync<EnemyPokemonPanel>();
 
             yield return new Parallel(m_Coordinator, TypeDefeatedPokemonNameCharByChar(),
-                m_GraphicsInterface.HideAsync<EnemyStatsPanel>());
+                m_Interface.HideAsync<EnemyStatsPanel>());
 
             yield return m_DelayForHalfSecond;
 
@@ -48,7 +52,7 @@ namespace Iris
 
             string message = string.Concat($"Wild {combatant.name} fainted!");
 
-            yield return m_GraphicsInterface.TypeTextCharByChar(message);
+            yield return m_Interface.TypeTextCharByChar(message);
         }
 
         private IEnumerator CalculateExperienceGainAndLevelUp()
@@ -61,7 +65,7 @@ namespace Iris
 
             string message = string.Concat($"{player.name} gained {exp} EXP. Points!");
 
-            yield return m_GraphicsInterface.TypeTextCharByChar(message);
+            yield return m_Interface.TypeTextCharByChar(message);
 
             int totalExp = player.experience + exp;
 
@@ -69,7 +73,7 @@ namespace Iris
             {
                 player.experience = Mathf.FloorToInt(Mathf.Min(totalExp, Mathf.Pow(player.level + 1, 3)));
 
-                yield return m_GraphicsInterface.SetPlayerStatsPanelExperienceSlider();
+                yield return m_Interface.SetPlayerStatsPanelExperienceSlider();
 
                 if (player.experience >= Mathf.Pow(player.level + 1, 3))
                 {
@@ -77,11 +81,11 @@ namespace Iris
 
                     m_Coordinator.SetPlayerStatPanelAndAbilityMenuProperties();
 
-                    m_GraphicsInterface.Show<LevelUpMenu>();
+                    m_Interface.Show<LevelUpMenu>();
 
                     yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
-                    m_GraphicsInterface.Hide<LevelUpMenu>();
+                    m_Interface.Hide<LevelUpMenu>();
                 }
             }
         }

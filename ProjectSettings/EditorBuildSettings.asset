@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scenes/Overworld.unity
     guid: b3c09dc237ebf4c3db66ba08b796afbc
+  - enabled: 1
+    path: Assets/Resources/Scenes/Party.unity
+    guid: cd3098d8c700441f6a31cdb18d5845d9
   m_configObjects: {}

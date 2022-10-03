@@ -16,7 +16,7 @@ MonoBehaviour:
   m_SpriteFront: {fileID: -878961486, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_SpriteBack: {fileID: -1462036294, guid: 0df594e9698084007af817f95786d5bb, type: 3}
   m_Health: 401
-  m_Attack: 14
+  m_Attack: 270
   m_Defence: 49
   m_Speed: 33
   m_level: 5

@@ -18,15 +18,13 @@ namespace Iris
         private const float kDelayForHalfSecond = 0.5f;
         private const float kDelayForOneSecond = 1f;
 
-        private const int kInstigatorHasPriority = -1;
-        private const int kInstigatorDoesNotHavePriority = 1;
-
-        public Fight(BattleGraphicsInterface graphicsInterface, Combatant instigator, Combatant target, AbilitySpec abilitySpec) : base(graphicsInterface, instigator, target)
+        public Fight(BattleGraphicsInterface graphicsInterface, Combatant instigator, Combatant target, AbilitySpec abilitySpec)
+            : base(graphicsInterface, instigator, target)
         {
             m_AbilitySpec = abilitySpec;
         }
 
-        // Find a better way to check the type of effect that is being run, this shit sucks ass.
+        // It's still kinda ass, but it'll do.
         public override IEnumerator Run()
         {
             m_AbilitySpec.PreAbilityActivate(instigator, target, out SpecResult result);

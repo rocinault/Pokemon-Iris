@@ -1131,6 +1131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 720bcdf1d30fa41b08d567f0762ea4a9, type: 2}
+  m_Texture: {fileID: 0}
 --- !u!1 &267027098
 GameObject:
   m_ObjectHideFlags: 0
@@ -3836,6 +3837,7 @@ GameObject:
   - component: {fileID: 1272865689}
   - component: {fileID: 1272865690}
   - component: {fileID: 1272865691}
+  - component: {fileID: 1272865692}
   m_Layer: 0
   m_Name: Battle Coordinator
   m_TagString: Untagged
@@ -3870,7 +3872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abb73cd8021144b9acfc3a00a99ad32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_GraphicsInterface: {fileID: 1272865691}
+  m_Interface: {fileID: 1272865691}
   m_MoveRuntimeSet: {fileID: 11400000, guid: 760cf0f1a29a84eccae5967bbf75c9ff, type: 2}
   m_Player: {fileID: 1504916609}
   m_PlayerCombatant: {fileID: 908746895}
@@ -3899,6 +3901,19 @@ MonoBehaviour:
   m_EnemyStatsPanel: {fileID: 2074931612}
   m_EnemyPokemonPanel: {fileID: 906688996}
   m_TextProcessor: {fileID: 511868381}
+--- !u!114 &1272865692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272865688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa6284271efc43cb8b673c5e8908d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RuntimeSet: {fileID: 11400000, guid: 2797d938c5f564daa8b3509a988d0999, type: 2}
 --- !u!1 &1295712271
 GameObject:
   m_ObjectHideFlags: 0
@@ -4827,7 +4842,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
 --- !u!1 &1640105320
 GameObject:
   m_ObjectHideFlags: 0

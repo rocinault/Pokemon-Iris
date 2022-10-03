@@ -9,23 +9,24 @@ namespace Iris
 {
     internal sealed class BattleLostState<T> : State<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        private readonly BattleGraphicsInterface m_GraphicsInterface;
-        private readonly BattleCoordinator m_Coordinator;
+        private readonly GameBattleStateBehaviour m_StateBehaviour;
 
-        public BattleLostState(T uniqueID, BattleGraphicsInterface graphicsInterface, BattleCoordinator coordinator) : base(uniqueID)
+        private BattleGraphicsInterface m_GraphicsInterface;
+        private BattleCoordinator m_Coordinator;
+
+        public BattleLostState(T uniqueID, GameBattleStateBehaviour stateBehaviour) : base(uniqueID)
         {
-            m_GraphicsInterface = graphicsInterface;
-            m_Coordinator = coordinator;
+            m_StateBehaviour = stateBehaviour;
         }
 
         public override void Enter()
         {
-            m_Coordinator.StartCoroutine(WildPokemonBattleLostEndSequence());
+            //m_Coordinator.StartCoroutine(WildPokemonBattleLostEndSequence());
         }
 
-        private IEnumerator WildPokemonBattleLostEndSequence()
-        {
-            yield return m_GraphicsInterface.HideAsync<PlayerPokemonPanel>();
-        }
+        //private IEnumerator WildPokemonBattleLostEndSequence()
+        //{
+        //    yield return m_GraphicsInterface.HideAsync<PlayerPokemonPanel>();
+        //}
     }
 }

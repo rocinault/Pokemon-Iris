@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-using Golem;
 using Slowbro;
 using Umbreon;
 using Voltorb;

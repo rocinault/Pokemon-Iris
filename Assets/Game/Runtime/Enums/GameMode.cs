@@ -4,7 +4,7 @@
     {
         Overworld,
         Battle,
-        Bag,
-        Party
+        Party,
+        Bag
     }
 }

@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,7 +29,8 @@ namespace Umbreon
 #if UNITY_EDITOR
                 if (m_Pokemon == null)
                 {
-                    throw new System.Exception($"Pokemon has not been set");
+                    string message = string.Concat($"Pokemon for {name} has not yet been set");
+                    throw new NullReferenceException(message);
                 }
 #endif
                 return m_Pokemon;
