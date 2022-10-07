@@ -17,6 +17,7 @@ namespace Umbreon
         public Statistic accuracy = new Statistic();
 
         public bool isFainted => health.value <= 0;
+        public bool activeSelf;
 
         public uint level;
         public int experience;

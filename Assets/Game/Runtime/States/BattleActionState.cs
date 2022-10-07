@@ -12,8 +12,6 @@ namespace Iris
     {
         private readonly GameBattleStateBehaviour m_StateBehaviour;
 
-        private BattleGraphicsInterface m_Interface;
-
         public BattleActionState(T uniqueID, GameBattleStateBehaviour stateBehaviour) : base(uniqueID)
         {
             m_StateBehaviour = stateBehaviour;
@@ -21,12 +19,14 @@ namespace Iris
 
         public override void Enter()
         {
-            m_Interface = m_StateBehaviour.GetBattleGraphicsInterface();
+            //m_StateBehaviour.GetBattleGraphicsInterface().SetActive<PlayerTrainerPanel>(false);
+            //m_StateBehaviour.GetBattleGraphicsInterface().SetActive<PlayerPokemonPanel>(true);
+            //m_StateBehaviour.GetBattleGraphicsInterface().SetActive<MovesMenu>(false);
 
             var moveRuntimeSet = m_StateBehaviour.GetMoveRuntimeSet();
             moveRuntimeSet.Sort();
 
-            m_Interface.CleanupTextProcessorAndClearText();
+            m_StateBehaviour.GetBattleGraphicsInterface().CleanupTextProcessorAndClearText();
             m_StateBehaviour.StartCoroutine(RunAllSelectedActionsInPriority());
         }
 
@@ -63,7 +63,7 @@ namespace Iris
             moveRuntimeSet.Clear();
 
             m_StateBehaviour.StopCoroutine(RunAllSelectedActionsInPriority());
-            m_Interface.CleanupTextProcessorAndClearText();
+            m_StateBehaviour.GetBattleGraphicsInterface().CleanupTextProcessorAndClearText();
         }
     }
 }

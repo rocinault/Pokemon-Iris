@@ -3411,7 +3411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1053022120
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4581,6 +4581,7 @@ GameObject:
   - component: {fileID: 1504916607}
   - component: {fileID: 1504916609}
   - component: {fileID: 1504916610}
+  - component: {fileID: 1504916611}
   m_Layer: 5
   m_Name: Panel - Trainer
   m_TagString: Untagged
@@ -4660,6 +4661,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TrainerSet: {fileID: 11400000, guid: b4ceb247dfc024785b20571b305c33c6, type: 2}
   m_PokemonRuntimeSet: {fileID: 11400000, guid: ac0b08cc7cc374c03913ec78fd26dac9, type: 2}
+  m_DataSettings:
+    m_UniqueID: Trainer
+    m_PersistanceType: 3
 --- !u!114 &1504916610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4683,6 +4687,18 @@ MonoBehaviour:
     - {fileID: 1907519768, guid: 71b815555a1544527826e65d8edf0352, type: 3}
     - {fileID: 509095337, guid: 71b815555a1544527826e65d8edf0352, type: 3}
     frameRate: 6
+--- !u!114 &1504916611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504916605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6e04ba6957549b4849bbca4a4cacdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1515526053
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,8 @@ namespace Iris
 
         private static readonly Stack<IState<GameMode>> s_States = new Stack<IState<GameMode>>();
 
+        private readonly WaitForEndOfFrame m_WaitForEndOfFrame = new WaitForEndOfFrame();
+
         private static bool s_IsTransitioning = false;
 
         protected override void Awake()
@@ -66,7 +68,11 @@ namespace Iris
 
                 s_States.Peek().Exit();
 
+                Repository.instance.SaveAllDataInternal();
+
                 yield return SceneSystem.instance.UnloadSceneAsync(s_States.Peek().uniqueID.ToString());
+
+                yield return m_WaitForEndOfFrame;
             }
 
             if (stateToTransitionInto != null)
@@ -79,6 +85,10 @@ namespace Iris
             }
 
             yield return SceneSystem.instance.LoadSceneAsync(s_States.Peek().uniqueID.ToString());
+
+            Repository.instance.LoadAllDataInternal();
+
+            yield return m_WaitForEndOfFrame;
 
             s_States.Peek().Enter();
 

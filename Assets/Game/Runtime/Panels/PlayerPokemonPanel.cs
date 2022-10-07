@@ -54,10 +54,13 @@ namespace Iris
 
         public override IEnumerator Hide()
         {
+            var position = rectTransform.anchoredPosition;
+
             yield return new Parallel(this, m_Settings.image.material.Alpha(0f, 0.35f, EasingType.linear),
                 rectTransform.Translate(rectTransform.anchoredPosition, Vector2.down * 64f, 0.35f, Space.Self, EasingType.EaseOutSine));
 
             gameObject.SetActive(false);
+            rectTransform.anchoredPosition = position;
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Iris
     internal sealed class PartyPokemonMenu : Menu<PartyGraphicProperties>
     {
         [SerializeField]
+        private GameObjectRuntimeSet m_GameObjectRuntimeSet;
+
+        [SerializeField]
         private Button[] m_Buttons;
 
         private Pokemon[] m_Pokemon;
@@ -52,7 +55,6 @@ namespace Iris
         {
             combatant.affinity = Affinity.Friendly;
             combatant.pokemon = pokemon;
-
         }
 
         private void SetStatPanelProperties(PlayerStatsPanel panel, Pokemon pokemon)
@@ -69,6 +71,8 @@ namespace Iris
         // Fix this later on, so I  don't need to use lambda functions. Have a button sub-class.
         protected override void AddListeners()
         {
+            m_GameObjectRuntimeSet.ClearAndTrimExcess();
+
             for (int i = 0; i < kMaxNumberOfPartyMembers; i++)
             {
                 var button = m_Buttons[i];
@@ -79,6 +83,8 @@ namespace Iris
 
                     button.onClick.AddListener(() =>
                     {
+                        m_GameObjectRuntimeSet.Add(combatant.gameObject);
+
                         var args = PartyPokemonButtonClickedEventArgs.CreateEventArgs(combatant.pokemon);
                         EventSystem.instance.Invoke(args);
                     });

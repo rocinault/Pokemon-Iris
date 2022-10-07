@@ -4007,6 +4007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b825e429ef7b24250afe47602f6dc27c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GameObjectRuntimeSet: {fileID: 11400000, guid: f7d972500c4bc4bdc9a74d8f94e326d1, type: 2}
   m_Buttons:
   - {fileID: 1118688545}
   - {fileID: 1680948985}
@@ -7165,9 +7166,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20719541405b549b69ab723e0b69b21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GameObjectRuntimeSet: {fileID: 11400000, guid: f7d972500c4bc4bdc9a74d8f94e326d1, type: 2}
   m_SummaryButton: {fileID: 130113967}
   m_SwitchButton: {fileID: 688416799}
   m_ReturnButton: {fileID: 1389641410}
+  m_Combatants:
+  - {fileID: 1118688548}
+  - {fileID: 1680948988}
+  - {fileID: 1648130475}
+  - {fileID: 878922606}
+  - {fileID: 2111892237}
+  - {fileID: 1568177597}
 --- !u!1 &1860153347
 GameObject:
   m_ObjectHideFlags: 0
@@ -7410,13 +7419,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1891868218}
   - component: {fileID: 1891868217}
+  - component: {fileID: 1891868219}
   m_Layer: 0
   m_Name: Trainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1891868217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7431,6 +7441,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TrainerSet: {fileID: 11400000, guid: b4ceb247dfc024785b20571b305c33c6, type: 2}
   m_PokemonRuntimeSet: {fileID: 11400000, guid: ac0b08cc7cc374c03913ec78fd26dac9, type: 2}
+  m_DataSettings:
+    m_UniqueID: Trainer
+    m_PersistanceType: 3
 --- !u!4 &1891868218
 Transform:
   m_ObjectHideFlags: 0
@@ -7446,6 +7459,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1891868219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891868216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6e04ba6957549b4849bbca4a4cacdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1904362336
 GameObject:
   m_ObjectHideFlags: 0

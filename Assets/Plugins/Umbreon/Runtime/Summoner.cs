@@ -4,14 +4,14 @@ namespace Umbreon
 {
     public abstract class Summoner : MonoBehaviour
     {
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             CreateStartupPokemonParty();
         }
 
         protected abstract void CreateStartupPokemonParty();
 
-        public abstract Pokemon GetActivePokemonPartyMember();
+        public abstract Pokemon GetActiveOrFirstPokemonThatIsNotFainted();
 
         public abstract Pokemon GetFirstPokemonThatIsNotFainted();
     }

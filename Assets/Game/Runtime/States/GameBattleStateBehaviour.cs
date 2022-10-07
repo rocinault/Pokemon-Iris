@@ -58,7 +58,16 @@ namespace Iris
 
         private void StartBattleStateMachine()
         {
-            s_StateMachine.Start();
+            // Find a better way of checking for switch requests.
+            if (m_MoveRuntimeSet.Count() > 0)
+            {
+                RandomEnemyAttack();
+                ChangeState(BattleState.Action);
+            }
+            else
+            {
+                s_StateMachine.Start();
+            }
         }
 
         internal void ChangeState(BattleState stateToTransitionInto)
@@ -91,10 +100,18 @@ namespace Iris
             GetBattleCoordinator().GetPlayerCombatant(out Combatant player);
             GetBattleCoordinator().GetEnemyCombatant(out Combatant enemy);
 
-            m_MoveRuntimeSet.Add(new Fight(GetBattleGraphicsInterface(), player, enemy, item));
+            m_MoveRuntimeSet.Add(new Fight(this, player, enemy, item));
 
             // Enemy Attack
-            m_MoveRuntimeSet.Add(new Fight(m_Interface, enemy, player, enemy.pokemon.GetAllAbilities()[0]));
+            m_MoveRuntimeSet.Add(new Fight(this, enemy, player, enemy.pokemon.GetAllAbilities()[0]));
+        }
+
+        private void RandomEnemyAttack()
+        {
+            GetBattleCoordinator().GetPlayerCombatant(out Combatant player);
+            GetBattleCoordinator().GetEnemyCombatant(out Combatant enemy);
+
+            m_MoveRuntimeSet.Add(new Fight(this, enemy, player, enemy.pokemon.GetAllAbilities()[0]));
         }
 
         internal MoveRuntimeSet GetMoveRuntimeSet()

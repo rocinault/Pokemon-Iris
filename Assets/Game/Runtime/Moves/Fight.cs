@@ -18,8 +18,8 @@ namespace Iris
         private const float kDelayForHalfSecond = 0.5f;
         private const float kDelayForOneSecond = 1f;
 
-        public Fight(BattleGraphicsInterface graphicsInterface, Combatant instigator, Combatant target, AbilitySpec abilitySpec)
-            : base(graphicsInterface, instigator, target)
+        public Fight(GameBattleStateBehaviour stateBehaviour, Combatant instigator, Combatant target, AbilitySpec abilitySpec)
+            : base(stateBehaviour, instigator, target)
         {
             m_AbilitySpec = abilitySpec;
         }
@@ -46,7 +46,7 @@ namespace Iris
                 result.message = string.Empty;
             }
 
-            graphicsInterface.CleanupTextProcessorAndClearText();
+            m_StateBehaviour.GetBattleGraphicsInterface().CleanupTextProcessorAndClearText();
         }
 
         private IEnumerator TypeSpecResultMessagesCharByCharWithHalfSecondDelay(SpecResult result)
@@ -55,7 +55,7 @@ namespace Iris
 
             for (int i = 0; i < messages.Length; i++)
             {
-                yield return graphicsInterface.TypeTextCharByChar(messages[i]);
+                yield return m_StateBehaviour.GetBattleGraphicsInterface().TypeTextCharByChar(messages[i]);
 
                 yield return m_DelayForHalfSecond;
             }
@@ -67,7 +67,7 @@ namespace Iris
 
             for (int i = 0; i < messages.Length; i++)
             {
-                yield return graphicsInterface.TypeTextCharByChar(messages[i]);
+                yield return m_StateBehaviour.GetBattleGraphicsInterface().TypeTextCharByChar(messages[i]);
 
                 yield return m_DelayForOneSecond;
             }

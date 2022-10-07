@@ -25,10 +25,10 @@ namespace Iris
         [SerializeField]
         private Combatant m_EnemyCombatant;
 
-        internal void SetPlayerActivePokemon()
+        internal void SetPlayerActivePokemon(Pokemon pokemon = null)
         {
             m_PlayerCombatant.affinity = Affinity.Friendly;
-            m_PlayerCombatant.pokemon = m_Player.GetFirstPokemonThatIsNotFainted();
+            m_PlayerCombatant.pokemon = pokemon ?? m_Player.GetActiveOrFirstPokemonThatIsNotFainted();
         }
 
         internal void GetPlayerCombatant(out Combatant combatant)
@@ -41,10 +41,10 @@ namespace Iris
             pokemon = m_PlayerCombatant.pokemon;
         }
 
-        internal void SetEnemyActivePokemon()
+        internal void SetEnemyActivePokemon(Pokemon pokemon = null)
         {
             m_EnemyCombatant.affinity = Affinity.Hostile;
-            m_EnemyCombatant.pokemon = m_Enemy.GetFirstPokemonThatIsNotFainted();
+            m_EnemyCombatant.pokemon = pokemon ?? m_Enemy.GetActiveOrFirstPokemonThatIsNotFainted();
         }
 
         internal void GetEnemyCombatant(out Combatant combatant)

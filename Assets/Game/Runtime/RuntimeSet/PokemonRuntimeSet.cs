@@ -17,5 +17,22 @@ namespace Iris
                 base.Add(item);
             }
         }
+
+        internal bool TryGetActivePokemon(out Pokemon pokemon)
+        {
+            pokemon = null;
+
+            for (int i = 0; i < Count(); i++)
+            {
+                pokemon = m_Collection[i];
+
+                if (pokemon.activeSelf)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

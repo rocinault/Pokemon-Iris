@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Golem;
+using Umbreon;
 
 namespace Iris
 {
@@ -61,7 +62,14 @@ namespace Iris
 
         private void ProcessPokemonSwitchRequest(PartyOptionsButtonClickedEventArgs args)
         {
+            AddSwitchMoveToRuntimeSet(args.instigator, args.target);
+
             GameCoordinator.instance.ExitGameMode();
+        }
+
+        private void AddSwitchMoveToRuntimeSet<T>(T instigator, T target) where T : Combatant
+        {
+            m_MoveRuntimeSet.Add(new Switch(GameCoordinator.instance.battleState, instigator, target));
         }
 
         private void HidePokemonOptionsMenuAndShowParty()

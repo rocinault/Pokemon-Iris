@@ -1,23 +1,25 @@
 using System;
 using System.Collections;
 
+using UnityEngine;
+
 using Umbreon;
 
 namespace Iris
 {
     internal abstract class Move : IComparable<Move>
     {
-        public readonly BattleGraphicsInterface graphicsInterface;
-
         public readonly Combatant instigator;
         public readonly Combatant target;
+
+        protected readonly GameBattleStateBehaviour m_StateBehaviour;
 
         protected const int kInstigatorHasPriority = -1;
         protected const int kInstigatorDoesNotHavePriority = 1;
 
-        public Move(BattleGraphicsInterface graphicsInterface, Combatant instigator, Combatant target)
+        public Move(GameBattleStateBehaviour stateBehaviour, Combatant instigator, Combatant target)
         {
-            this.graphicsInterface = graphicsInterface;
+            m_StateBehaviour = stateBehaviour;
 
             this.instigator = instigator;
             this.target = target;

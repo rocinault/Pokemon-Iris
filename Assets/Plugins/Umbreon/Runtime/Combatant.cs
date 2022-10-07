@@ -14,6 +14,8 @@ namespace Umbreon
     [RequireComponent(typeof(RectTransform), typeof(Image))]
     public class Combatant : MonoBehaviour
     {
+        public bool isActive => pokemon.activeSelf;
+
         public Affinity affinity
         {
             get => m_Affinity;

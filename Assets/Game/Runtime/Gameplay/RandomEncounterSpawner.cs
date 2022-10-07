@@ -18,15 +18,16 @@ namespace Iris
             m_Pokemon = RandomEncounterRuntimeSet.CreatePokemonFromSet(m_EncounterSet.GetRandomEncounterFromSet());
         }
 
-        public override Pokemon GetActivePokemonPartyMember()
+        public override Pokemon GetActiveOrFirstPokemonThatIsNotFainted()
         {
-            return m_Pokemon;
+            return GetFirstPokemonThatIsNotFainted();
         }
 
         public override Pokemon GetFirstPokemonThatIsNotFainted()
         {
             if (!m_Pokemon.isFainted)
             {
+                m_Pokemon.activeSelf = true;
                 return m_Pokemon;
             }
 
