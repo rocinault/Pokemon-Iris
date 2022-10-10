@@ -6,7 +6,7 @@ namespace Golem
 {
     public abstract class StateBehaviour<T> : MonoBehaviour, IState<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        public virtual T uniqueID { get; }
+        public virtual T uniqueId { get; }
 
         public virtual void Enter()
         {

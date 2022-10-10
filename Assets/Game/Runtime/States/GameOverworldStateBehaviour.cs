@@ -6,7 +6,7 @@ namespace Iris
 {
     internal sealed class GameOverworldStateBehaviour : StateBehaviour<GameMode>
     {
-        public override GameMode uniqueID => GameMode.Overworld;
+        public override GameMode uniqueId => GameMode.Overworld;
 
         public override void Enter()
         {

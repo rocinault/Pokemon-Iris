@@ -18,7 +18,7 @@ namespace Iris
 
         private static readonly StateMachine<BattleState> s_StateMachine = new StateMachine<BattleState>();
 
-        public override GameMode uniqueID => GameMode.Battle;
+        public override GameMode uniqueId => GameMode.Battle;
 
         private void Awake()
         {

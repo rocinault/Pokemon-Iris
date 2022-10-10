@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a3d1e340a45a14e53a9e1d0f85ba1ddd
+guid: 1917a94c2756b4ec996b62df93ad18c4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -68,7 +68,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -106,64 +106,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: borders-battle-sprites_0
+      name: icons-bag-menu-sprites_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 5
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 9, y: 8, z: 9, w: 8}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0f4fc2cacdf5d4426b80e3f56c70a7bf
-      internalID: 1759917316
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: borders-battle-sprites_1
-      rect:
-        serializedVersion: 2
-        x: 26
-        y: 5
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 7, y: 7, z: 7, w: 7}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a8430b8eb2d684c0cab8db3c6c564b78
-      internalID: 1807982755
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: borders-battle-sprites_2
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 5
-        width: 24
-        height: 24
+        x: 0
+        y: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a391e02a97b06452aba214af9cc561b1
-      internalID: -1465519880
+      spriteID: 009ae31ea0c8c49e7979fef4206c9919
+      internalID: -1720630893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons-bag-menu-sprites_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dd7db771b25049fea262934ca69a489
+      internalID: -70192864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons-bag-menu-sprites_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1216dbf5e0d74cfb9012d3859b66fe9
+      internalID: 1525394868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons-bag-menu-sprites_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49e593c43147342608642e194aba0e62
+      internalID: 143844235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons-bag-menu-sprites_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cd5c657bbe554fe481dadf0f622665a
+      internalID: -1681191971
       vertices: []
       indices: 
       edges: []
@@ -179,9 +221,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      borders-battle-sprites_1: 1807982755
-      borders-battle-sprites_2: -1465519880
-      borders-battle-sprites_0: 1759917316
+      icons-bag-menu-sprites_1: -70192864
+      icons-bag-menu-sprites_0: -1720630893
+      icons-bag-menu-sprites_4: -1681191971
+      icons-bag-menu-sprites_3: 143844235
+      icons-bag-menu-sprites_2: 1525394868
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

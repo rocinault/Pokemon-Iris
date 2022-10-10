@@ -52,7 +52,7 @@ namespace Golem
 
             foreach (var state in states)
             {
-                m_States.Add(state.uniqueID, state);
+                m_States.Add(state.uniqueId, state);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Golem
 
             foreach (var state in states)
             {
-                registered.Add(state.uniqueID);
+                registered.Add(state.uniqueId);
             }
 
             var entries = Enum.GetValues(typeof(T));
@@ -151,7 +151,7 @@ namespace Golem
 
             foreach (var state in states)
             {
-                registered.Add(state.uniqueID);
+                registered.Add(state.uniqueId);
             }
 
             var entries = Enum.GetValues(typeof(T));

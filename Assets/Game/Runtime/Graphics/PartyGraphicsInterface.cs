@@ -12,6 +12,9 @@ namespace Iris
         [SerializeField]
         private PartyOptionsMenu m_PartyOptionsMenu;
 
+        [SerializeField]
+        private TextProcessor m_TextProcessor;
+
         protected override void BindSceneGraphicReferences()
         {
             Add(m_PartyPokemonMenu);
@@ -21,6 +24,11 @@ namespace Iris
         internal void SetPartyMenuProperties(PartyGraphicProperties props)
         {
             SetProperties(typeof(PartyPokemonMenu).Name, props);
+        }
+
+        internal void PrintCompletedText(string message)
+        {
+            m_TextProcessor.PrintCompletedText(message);
         }
     }
 }

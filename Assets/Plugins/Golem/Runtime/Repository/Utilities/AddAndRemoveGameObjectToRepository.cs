@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Golem
 {
-    internal sealed class AddAndRemoveToRepository : MonoBehaviour
+    internal sealed class AddAndRemoveGameObjectToRepository : MonoBehaviour
     {
         private void Awake()
         {

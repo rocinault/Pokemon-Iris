@@ -5,7 +5,7 @@ using Umbreon;
 
 namespace Iris
 {
-    internal sealed class GameMenuStateBehaviour : StateBehaviour<GameMode>
+    internal sealed class GamePartyStateBehaviour : StateBehaviour<GameMode>
     {
         [SerializeField]
         private PokemonRuntimeSet m_PokemonRuntimeSet;
@@ -18,12 +18,14 @@ namespace Iris
 
         private PartyGraphicsInterface m_Interface;
 
-        public override GameMode uniqueID => GameMode.Party;
+        public override GameMode uniqueId => GameMode.Party;
 
         public override void Enter()
         {
             m_Interface = m_GameObjectRuntimeSet.GetComponentFromRuntimeSet<PartyGraphicsInterface>();
+
             m_Interface.SetPartyMenuProperties(PartyGraphicProperties.CreateProperties(m_PokemonRuntimeSet.ToArray()));
+            m_Interface.PrintCompletedText(string.Concat($"Choose a POKEMON."));
 
             AddListeners();
         }
@@ -37,6 +39,8 @@ namespace Iris
         private void OnPartyPokemonButtonClicked(PartyPokemonButtonClickedEventArgs args)
         {
             m_Interface.Show<PartyOptionsMenu>();
+
+            m_Interface.PrintCompletedText(string.Concat($"What should {args.pokemon.name} do?"));
         }
 
         private void OnPartyOptionsButtonClicked(PartyOptionsButtonClickedEventArgs args)
@@ -62,7 +66,36 @@ namespace Iris
 
         private void ProcessPokemonSwitchRequest(PartyOptionsButtonClickedEventArgs args)
         {
-            AddSwitchMoveToRuntimeSet(args.instigator, args.target);
+            var instigator = args.instigator;
+            var target = args.target;
+
+            if (instigator == target)
+            {
+                DenyPokemonSwitchOnTargetAlreadyInBattle(target);
+            }
+            else if (target.pokemon.isFainted)
+            {
+                DenyPokemonSwitchOnTargetFainted(target);
+            }
+            else
+            {
+                AllowPokemonSwitch(instigator, target);
+            }
+        }
+
+        private void DenyPokemonSwitchOnTargetAlreadyInBattle(Combatant target)
+        {
+            m_Interface.PrintCompletedText(string.Concat($"{target.pokemon.name} is already in battle!"));
+        }
+
+        private void DenyPokemonSwitchOnTargetFainted(Combatant target)
+        {
+            m_Interface.PrintCompletedText(string.Concat($"{target.pokemon.name} is unable to battle!"));
+        }
+
+        private void AllowPokemonSwitch(Combatant instigator, Combatant target)
+        {
+            AddSwitchMoveToRuntimeSet(instigator, target);
 
             GameCoordinator.instance.ExitGameMode();
         }
@@ -76,6 +109,8 @@ namespace Iris
         {
             m_Interface.Hide<PartyOptionsMenu>();
             m_Interface.Show<PartyPokemonMenu>();
+
+            m_Interface.PrintCompletedText(string.Concat($"Choose a POKEMON."));
         }
 
         public override void Exit()

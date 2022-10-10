@@ -64,6 +64,9 @@ namespace Iris
                 case MoveSelection.Pokemon:
                     TransitionIntoMenuGameMode();
                     break;
+                case MoveSelection.Bag:
+                    TransitionIntoBagGameMode();
+                    break;
                 default:
                     break;
             }
@@ -79,7 +82,14 @@ namespace Iris
         {
             Exit();
 
-            GameCoordinator.instance.EnterGameMode(GameCoordinator.instance.menuState);
+            GameCoordinator.instance.EnterGameMode(GameCoordinator.instance.partyState);
+        }
+
+        private void TransitionIntoBagGameMode()
+        {
+            Exit();
+
+            GameCoordinator.instance.EnterGameMode(GameCoordinator.instance.bagState);
         }
 
         private void OnAbilityButtonClicked(AbilityButtonClickedEventArgs args)

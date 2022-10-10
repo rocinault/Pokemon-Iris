@@ -4,11 +4,11 @@ namespace Golem
 {
     public abstract class State<T> : IState<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        public T uniqueID { get; }
+        public T uniqueId { get; }
 
         public State(T uniqueID)
         {
-            this.uniqueID = uniqueID;
+            this.uniqueId = uniqueID;
         }
 
         public virtual void Enter()
