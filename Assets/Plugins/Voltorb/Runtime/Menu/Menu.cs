@@ -1,48 +1,23 @@
+using UnityEngine;
+using UnityEngine.UI;
+
 namespace Voltorb
 {
-    public abstract class Menu : Graphic
+    public abstract class Menu : MonoBehaviour
     {
-        private void OnEnable()
+        public virtual void Show()
         {
-            AddListeners();
+            gameObject.SetActive(true);
         }
 
-        protected virtual void AddListeners()
+        public virtual void Hide()
         {
-
-        }
-
-        private void OnDisable()
-        {
-            RemoveListeners();    
-        }
-
-        protected virtual void RemoveListeners()
-        {
-
+            gameObject.SetActive(false);
         }
     }
 
-    public abstract class Menu<T> : Graphic<T> where T : GraphicProperties
+    public abstract class Menu<T> : Menu
     {
-        private void OnEnable()
-        {
-            AddListeners();
-        }
-
-        protected virtual void AddListeners()
-        {
-
-        }
-
-        private void OnDisable()
-        {
-            RemoveListeners();
-        }
-
-        protected virtual void RemoveListeners()
-        {
-
-        }
+        public abstract void SetProperties(T properties);
     }
 }

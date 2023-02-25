@@ -2,10 +2,12 @@
     "name": "Iris",
     "rootNamespace": "Iris",
     "references": [
-        "GUID:bb72c7bdbd9ed470bb4c7ab3e59d4045",
-        "GUID:78abd19e92d334799a7392dbbb57929d",
-        "GUID:5d42ff9e50c4b4d869311f4d68ac7c01",
-        "GUID:7e5b65fc8979f48efab58b1ff4b8d5a4"
+        "GUID:26708f616420d49a2823c40496329d27",
+        "GUID:22fe4bd629a614dba871fadf2a495e87",
+        "GUID:55310d19dd4cf4b0abc0414f62481e45",
+        "GUID:95f8ee9bb6ebf445a8faa93b352275a6",
+        "GUID:2b1ab74285a7b43a5b5fb1df41f6498d",
+        "GUID:8a5b2da99449d4e30b4d319988e0d300"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

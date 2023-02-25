@@ -8,7 +8,7 @@ namespace Golem
     {
         private readonly static Dictionary<Type, Delegate> s_Listeners = new Dictionary<Type, Delegate>();
 
-        internal void Add<T>(Type key, Action<T> handler) where T : EventArgs
+        internal void Add<T>(Type key, Action<T> handler) where T : struct
         {
             if (s_Listeners.TryGetValue(key, out Delegate value))
             {
@@ -20,7 +20,7 @@ namespace Golem
             }
         }
 
-        internal void Remove<T>(Type key, Action<T> handler) where T : EventArgs
+        internal void Remove<T>(Type key, Action<T> handler) where T : struct
         {
             if (s_Listeners.TryGetValue(key, out Delegate value))
             {

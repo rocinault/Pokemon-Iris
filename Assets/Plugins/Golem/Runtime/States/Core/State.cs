@@ -6,9 +6,9 @@ namespace Golem
     {
         public T uniqueId { get; }
 
-        public State(T uniqueID)
+        public State(T uniqueId)
         {
-            this.uniqueId = uniqueID;
+            this.uniqueId = uniqueId;
         }
 
         public virtual void Enter()

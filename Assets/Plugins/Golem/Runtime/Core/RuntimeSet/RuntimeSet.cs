@@ -49,17 +49,6 @@ namespace Golem
             m_Collection.Clear();
         }
 
-        public virtual void ClearAndTrimExcess()
-        {
-            m_Collection.Clear();
-            m_Collection.TrimExcess();
-        }
-
-        public T[] ToArray()
-        {
-            return m_Collection.ToArray();
-        }
-
         public IEnumerator<T> GetEnumerator()
         {
             return m_Collection.GetEnumerator();

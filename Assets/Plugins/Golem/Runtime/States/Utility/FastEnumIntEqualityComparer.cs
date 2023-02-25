@@ -6,21 +6,21 @@ namespace Golem
 {
     internal struct FastEnumIntEqualityComparer<T> : IEqualityComparer<T>
     {
-        internal static class BoxAvoidance
+        private static class BoxAvoidance
         {
-            private static readonly Func<T, int> _wrapper;
+            private static readonly Func<T, int> s_Wrapper;
 
             static BoxAvoidance()
             {
                 var paramter = Expression.Parameter(typeof(T), null);
                 var convert = Expression.ConvertChecked(paramter, typeof(int));
 
-                _wrapper = Expression.Lambda<Func<T, int>>(convert, paramter).Compile();
+                s_Wrapper = Expression.Lambda<Func<T, int>>(convert, paramter).Compile();
             }
 
-            public static int ToInt(T value)
+            internal static int ToInt(T value)
             {
-                return _wrapper(value);
+                return s_Wrapper(value);
             }
         }
 

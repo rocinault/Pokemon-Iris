@@ -2,102 +2,77 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Golem;
+using Vulpix;
 
 namespace Iris
 {
     internal sealed class GameCoordinator : Singleton<GameCoordinator>
     {
-        internal GameOverworldStateBehaviour overworldState => m_OverworldState;
-        internal GameBattleStateBehaviour battleState => m_BattleState;
-        internal GamePartyStateBehaviour partyState => m_PartyState;
-        internal GameBagStateBehaviour bagState => m_BagState;
 
-        private GameOverworldStateBehaviour m_OverworldState;
-        private GameBattleStateBehaviour m_BattleState;
-        private GamePartyStateBehaviour m_PartyState;
-        private GameBagStateBehaviour m_BagState;
+    }
+}
 
-        private static readonly Stack<IState<GameMode>> s_States = new Stack<IState<GameMode>>();
-
-        private readonly WaitForEndOfFrame m_WaitForEndOfFrame = new WaitForEndOfFrame();
-
-        private static bool s_IsTransitioning = false;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            GetStartupGameModeStates();
-        }
-
-        private void GetStartupGameModeStates()
-        {
-            m_OverworldState = GetComponent<GameOverworldStateBehaviour>();
-            m_BattleState = GetComponent<GameBattleStateBehaviour>();
-            m_PartyState = GetComponent<GamePartyStateBehaviour>();
-            m_BagState = GetComponent<GameBagStateBehaviour>();
-        }
+/*
+         private static readonly Stack<IGameState<GameMode>> s_States = new Stack<IGameState<GameMode>>();
 
         private void Start()
         {
-            EnterGameMode(m_OverworldState);
+            //EnterGameMode(OverworldGameState<GameMode>.Create(GameMode.Overworld, "Overworld"));
+            EnterGameMode(MenuBagGameState.Create(GameMode.Menu, "menu-bag"));
         }
 
-        internal void EnterGameMode(IState<GameMode> stateToTransitionInto)
+        internal void EnterGameMode(IGameState<GameMode> stateToTransitionInto)
         {
-            if (!s_IsTransitioning)
-            {
-                StartCoroutine(TransitionGameMode(stateToTransitionInto));
-            }
+            StartCoroutine(EnterGameModeAsync(stateToTransitionInto));
         }
 
         internal void ExitGameMode()
         {
-            if (!s_IsTransitioning)
-            {
-                StartCoroutine(TransitionGameMode(null));
-            }
+            StartCoroutine(ExitGameModeAsync());
         }
 
-        private IEnumerator TransitionGameMode(IState<GameMode> stateToTransitionInto)
+        private IEnumerator EnterGameModeAsync(IGameState<GameMode> stateToTransitionInto)
         {
-            s_IsTransitioning = true;
+            if (s_States.Count > 0)
+            {
+                yield return UnloadSceneAndExitGameModeAsync();
+            }
+
+            s_States.Push(stateToTransitionInto);
+
+            yield return LoadSceneAndEnterGameModeAsync();
+        }
+
+        private IEnumerator ExitGameModeAsync()
+        {
+            yield return UnloadSceneAndExitGameModeAsync();
+
+            s_States.Pop();
 
             if (s_States.Count > 0)
             {
-                yield return CameraFade.FadeIn();
-
-                s_States.Peek().Exit();
-
-                Repository.instance.SaveAllDataInternal();
-
-                yield return SceneSystem.instance.UnloadSceneAsync(s_States.Peek().uniqueId.ToString());
-
-                yield return m_WaitForEndOfFrame;
+                yield return LoadSceneAndEnterGameModeAsync();
             }
+        }
 
-            if (stateToTransitionInto != null)
-            {
-                s_States.Push(stateToTransitionInto);
-            }
-            else
-            {
-                s_States.Pop();
-            }
-
-            yield return SceneSystem.instance.LoadSceneAsync(s_States.Peek().uniqueId.ToString());
-
-            Repository.instance.LoadAllDataInternal();
-
-            yield return m_WaitForEndOfFrame;
+        private IEnumerator LoadSceneAndEnterGameModeAsync()
+        {
+            yield return SceneManagerUtility.LoadAdditiveSceneAsync(s_States.Peek().sceneName);
 
             s_States.Peek().Enter();
 
-            yield return CameraFade.FadeOut();
-
-            s_IsTransitioning = false;
+            yield return SaveManager.LoadAllDataInternalAsync();
         }
-    }
-}
+
+        private IEnumerator UnloadSceneAndExitGameModeAsync()
+        {
+            yield return SaveManager.SaveAllDataInternalAsync();
+
+            s_States.Peek().Exit();
+
+            yield return SceneManagerUtility.UnLoadAdditiveSceneAsync(s_States.Peek().sceneName);
+        } 
+ */ 

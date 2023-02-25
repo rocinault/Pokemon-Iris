@@ -6,21 +6,21 @@ namespace Golem
     {
         private readonly static EventListener s_Listeners = new EventListener();
 
-        public void AddListener<T>(Action<T> handler) where T : EventArgs
+        public void AddListener<T>(Action<T> handler) where T : struct
         {
             var key = typeof(T);
 
             s_Listeners.Add(key, handler);
         }
 
-        public void RemoveListener<T>(Action<T> handler) where T : EventArgs
+        public void RemoveListener<T>(Action<T> handler) where T : struct
         {
             var key = typeof(T);
 
             s_Listeners.Remove(key, handler);
         }
 
-        public void Invoke<T>(T args) where T : EventArgs
+        public void Invoke<T>(T args) where T : struct
         {
             var key = typeof(T);
 

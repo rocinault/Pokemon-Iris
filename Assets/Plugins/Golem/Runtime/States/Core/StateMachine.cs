@@ -25,8 +25,8 @@ namespace Golem
         }
 
         public void ChangeState(T stateToTransitionInto)
-        {          
-            if (!m_CurrentStateID.Equals(stateToTransitionInto))
+        {
+            if (!m_States[m_CurrentStateID].Equals(stateToTransitionInto))
             {
                 m_States[m_CurrentStateID].Exit();
 
@@ -39,6 +39,11 @@ namespace Golem
         public void SetCurrentStateID(T stateToSet)
         {
             m_CurrentStateID = stateToSet;
+        }
+
+        public T GetCurrentStateID()
+        {
+            return m_CurrentStateID;
         }
 
         public void AddStatesToStateMachine(IState<T>[] states)
@@ -137,7 +142,7 @@ namespace Golem
                     message = string.Concat(message, entry.ToString());
                     if (entry.Equals(duplicates[duplicates.Length - 1]))
                     {
-                        message = string.Concat(message, ", ");
+                        message = string.Concat(message, " , ");
                     }
                 }
 

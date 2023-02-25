@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: unlit-font-black
-  m_Shader: {fileID: 4800000, guid: 3b25f9bcc9215462889752852aeffe4d, type: 3}
+  m_Name: Unlit-Font-Black
+  m_Shader: {fileID: 4800000, guid: f8c393b1c73464b83abf7ebf7cc6913a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,6 +38,6 @@ Material:
     - _UseUIAlphaClip: 0
     m_Colors:
     - _Color: {r: 0.2509804, g: 0.2509804, b: 0.2509804, a: 1}
-    - _ShadowColor: {r: 0.84705883, g: 0.8156863, b: 0.6901961, a: 1}
-    - _ShadowOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _Outline: {r: 0.84705883, g: 0.8156863, b: 0.6901961, a: 1}
+    - _ShadowColor: {r: 1, g: 0.48584902, b: 0.48584902, a: 1}
   m_BuildTextureStacks: []
