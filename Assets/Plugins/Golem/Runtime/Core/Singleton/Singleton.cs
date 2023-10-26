@@ -15,7 +15,7 @@ namespace Golem
 
                     if (s_Instance == null)
                     {
-                        s_Instance = CreateHiddenGameObjectInstanceAndDontSave();
+                        s_Instance = CreateGameObjectInstanceAndDontSave();
                     }
                 }
 
@@ -31,17 +31,16 @@ namespace Golem
             {
                 s_Instance = (T)this;
             }
-#if UNITY_EDITOR
-            else
-            {
-                Debug.LogError(string.Concat($"Multiple instances of singleton type {typeof(T).Name}"));
-            }
-#endif
         }
 
-        private static T CreateHiddenGameObjectInstanceAndDontSave()
+        protected virtual void OnApplicationQuit()
         {
-            return EditorUtility.CreateGameObjectWithHideFlags(typeof(T).Name, HideFlags.HideAndDontSave, typeof(T)).GetComponent<T>();
+            Destroy(s_Instance);
+        }
+
+        private static T CreateGameObjectInstanceAndDontSave()
+        {
+            return new GameObject(typeof(T).Name).AddComponent<T>().GetComponent<T>();
         }
     }
 }

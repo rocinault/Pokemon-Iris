@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b37ef625995434f8448d6f7bf183e7, type: 3}
+  m_Name: Leaf_Walk
+  m_EditorClassIdentifier: 
+  up:
+    sprites:
+    - {fileID: -508430905, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: 1226109737, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -1992053678, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: 1226109737, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+  down:
+    sprites:
+    - {fileID: 1260820897, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -181599689, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -1207520773, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -181599689, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+  left:
+    sprites:
+    - {fileID: 1483868151, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -1195099583, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: 1929192379, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -1195099583, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+  right:
+    sprites:
+    - {fileID: -910435797, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: 267836246, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: -1020617364, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}
+    - {fileID: 267836246, guid: 2fd31e9e85683475dbadb2659ba89264, type: 3}

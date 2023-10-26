@@ -4,10 +4,11 @@ namespace Golem
 {
     public interface IState<T> where T : struct, IConvertible, IComparable, IFormattable
     {
-        T uniqueId { get; }
+        T UniqueId { get; }
 
         void Enter();
         void Update();
+        void FixedUpdate();
         void Exit();
     }
 }

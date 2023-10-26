@@ -49,6 +49,11 @@ namespace Golem
             m_Collection.Clear();
         }
 
+        public T[] ToArray()
+        {
+            return m_Collection.ToArray();
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             return m_Collection.GetEnumerator();

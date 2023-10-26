@@ -2,16 +2,17 @@ using UnityEngine;
 
 namespace Mew
 {
-    public sealed class SpriteAnimator : MonoBehaviour
-    {
-        [SerializeField]
-        private Sprite[] m_Sprites;
+	[RequireComponent(typeof(SpriteRenderer))]
+	public sealed class SpriteAnimator : MonoBehaviour
+	{
+        private SimpleDirectionalBlendTree m_SpriteBlendTree;
+        private SpriteAnimation m_SpriteAnimation;
+		private SpriteRenderer m_SpriteRenderer;
 
-        private SpriteRenderer m_SpriteRenderer;
+        private Vector3 m_RootDirection = Vector3.down;
+        private Vector3 m_LastFramePosition = Vector3.zero;
 
-        private Vector3 m_LastFramePosition;
-
-        private int m_CurrentFrame;
+        private float m_AnimationTime;
 
         private void Awake()
         {
@@ -25,22 +26,38 @@ namespace Mew
 
         private void Update()
         {
-            if (Vector2.Distance(m_LastFramePosition, transform.position) >= 0.5f)
+            m_AnimationTime += (transform.position - m_LastFramePosition).magnitude * 2f;
+
+            m_SpriteRenderer.sprite = m_SpriteAnimation[Mathf.FloorToInt(m_AnimationTime % m_SpriteAnimation.length)];
+
+            m_LastFramePosition = transform.position;
+        }
+
+        public void Play(SimpleDirectionalBlendTree blendTree)
+        {
+            m_SpriteBlendTree = blendTree;
+
+            if (m_RootDirection == Vector3.up)
             {
-                if (m_LastFramePosition != transform.position)
-                {
-                    m_LastFramePosition = transform.position;
-
-                    m_CurrentFrame++;
-
-                    if (m_CurrentFrame > m_Sprites.Length - 1)
-                    {
-                        m_CurrentFrame = 0;
-                    }
-
-                    m_SpriteRenderer.sprite = m_Sprites[m_CurrentFrame];
-                }
+                m_SpriteAnimation = m_SpriteBlendTree.up;
             }
+            else if (m_RootDirection == Vector3.down)
+            {
+                m_SpriteAnimation = m_SpriteBlendTree.down;
+            }
+            else if (m_RootDirection == Vector3.left)
+            {
+                m_SpriteAnimation = m_SpriteBlendTree.left;
+            }
+            else if (m_RootDirection == Vector3.right)
+            {
+                m_SpriteAnimation = m_SpriteBlendTree.right;
+            }
+        }
+
+        public void SetAnimatorRootDirection(float horizontal, float vertcial)
+        {
+            m_RootDirection = new Vector3(horizontal, vertcial);
         }
     }
 }

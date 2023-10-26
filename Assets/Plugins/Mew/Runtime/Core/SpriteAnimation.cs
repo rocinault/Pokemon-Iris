@@ -1,11 +1,22 @@
+using System;
 using UnityEngine;
 
 namespace Mew
 {
-    [CreateAssetMenu(fileName = "sprite-animation", menuName = "ScriptableObjects/Mew/Animation", order = 150)]
-    internal sealed class SpriteAnimation : ScriptableObject
-    {
-        [SerializeField]
-        private AnimationFrame[] m_Frames;
+	[Serializable]
+	public sealed class SpriteAnimation
+	{
+		[SerializeField]
+		internal Sprite[] sprites;
+
+        internal Sprite this[int index]
+        {
+            get => sprites[index];
+        }
+
+        internal float length
+        {
+            get => sprites.Length;
+        }
     }
 }
